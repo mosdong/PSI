@@ -1,12 +1,7 @@
 ﻿using PSI.Common;
 using PSI.DbUtility;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PSI.DAL
 {
@@ -35,7 +30,7 @@ namespace PSI.DAL
         /// <param name="dbName"></param>
         /// <param name="backupName"></param>
         /// <returns></returns>
-        public int BackupData(string path,string dbName,string backupName )
+        public int BackupData(string path, string dbName, string backupName)
         {
             SqlParameter[] paras =
             {

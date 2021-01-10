@@ -1,14 +1,10 @@
 ﻿using PSI.DbUtility;
 using PSI.Models.DModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PSI.DAL
 {
-    public class ToolGroupDAL:BaseDAL<ToolGroupInfoModel>
+    public class ToolGroupDAL : BaseDAL<ToolGroupInfoModel>
     {
         /// <summary>
         /// 获取所有的工具组（绑定下拉框或数据列表控件）
@@ -50,7 +46,7 @@ namespace PSI.DAL
         /// <returns></returns>
         public bool AddToolGroup(ToolGroupInfoModel tgInfo)
         {
-            return Add(tgInfo, "TGroupName,Creator",0)>0;
+            return Add(tgInfo, "TGroupName,Creator", 0) > 0;
         }
         /// <summary>
         /// 修改工具组
@@ -59,7 +55,7 @@ namespace PSI.DAL
         /// <returns></returns>
         public bool UpdateToolGroup(ToolGroupInfoModel tgInfo)
         {
-            return Update(tgInfo, "TGroupId,TGroupName,Creator","");
+            return Update(tgInfo, "TGroupId,TGroupName,Creator", "");
         }
 
         /// <summary>
@@ -69,14 +65,14 @@ namespace PSI.DAL
         /// <param name="delType"></param>
         /// <param name="isDeleted"></param>
         /// <returns></returns>
-        public bool UpdateToolGroupDeleteState(List<int> tgIds,int delType,int isDeleted)
+        public bool UpdateToolGroupDeleteState(List<int> tgIds, int delType, int isDeleted)
         {
             string delSql = "";
             string ids = string.Join(",", tgIds);
             string strWhere = $" and  TGroupId in ({ids})";
             if (delType == 0)
-                delSql = CreateSql.CreateLogicDeleteSql<ToolGroupInfoModel>(strWhere,isDeleted);
-            else if(delType==1)
+                delSql = CreateSql.CreateLogicDeleteSql<ToolGroupInfoModel>(strWhere, isDeleted);
+            else if (delType == 1)
             {
                 delSql = CreateSql.CreateDeleteSql<ToolGroupInfoModel>(strWhere);
             }
@@ -85,6 +81,6 @@ namespace PSI.DAL
             return SqlHelper.ExecuteTrans(list);
         }
 
-       
+
     }
 }

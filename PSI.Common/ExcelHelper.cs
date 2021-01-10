@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
-using NPOI.HSSF.UserModel;
-using System.IO;
+using System;
+using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Reflection;
 
 namespace PSI.Common
@@ -341,7 +339,7 @@ namespace PSI.Common
         public static IWorkbook CreateWorkBook(string exName)
         {
             IWorkbook workbook = null;
-            if (exName==".xlsx") // 2007版本
+            if (exName == ".xlsx") // 2007版本
                 workbook = new XSSFWorkbook();
             else if (exName == ".xls") // 2003版本
                 workbook = new HSSFWorkbook();
@@ -363,6 +361,6 @@ namespace PSI.Common
             }
             return sheet;
         }
-        
+
     }
 }

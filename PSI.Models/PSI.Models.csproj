@@ -43,11 +43,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APIModels\GoodsTypeInfoApi.cs" />
+    <Compile Include="APIModels\GoodsUnitInfoApi.cs" />
+    <Compile Include="APIModels\MenuInfoApi.cs" />
     <Compile Include="APIModels\MessageResult.cs" />
     <Compile Include="APIModels\PageInfo.cs" />
+    <Compile Include="APIModels\PerchaseInStoreInfoApi.cs" />
     <Compile Include="APIModels\ReqQueryInfo.cs" />
-    <Compile Include="APIModels\UnitTypeInfo.cs" />
+    <Compile Include="APIModels\SaleOutStoreInfoApi.cs" />
+    <Compile Include="APIModels\StockStoreInfoApi.cs" />
+    <Compile Include="APIModels\UnitTypeInfoModelApi.cs" />
     <Compile Include="APIModels\UserInfo.cs" />
+    <Compile Include="APIModels\UserInfoApi.cs" />
+    <Compile Include="APIModels\ViewSaleGoodsInfoApi.cs" />
+    <Compile Include="APIModels\ViewStoreStockUpDownApi.cs" />
     <Compile Include="DModels\GoodsInfoModel.cs" />
     <Compile Include="DModels\GoodsTypeInfoModel.cs" />
     <Compile Include="DModels\GoodsUnitInfoModel.cs" />

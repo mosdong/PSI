@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace PSI.Models.APIModels
 {
@@ -15,5 +11,10 @@ namespace PSI.Models.APIModels
         public string KeyWords { set; get; }
 
         public List<int> KeyIds { set; get; }
+
+        public List<int> TemKeyIds { set; get; }
+
+        public bool BlShow { set; get; }
+        public int TypeId { set; get; }
     }
 }

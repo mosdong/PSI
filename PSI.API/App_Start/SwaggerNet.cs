@@ -1,33 +1,32 @@
+using Swagger.Net;
 using System;
 using System.IO;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Web.Http.Dispatcher;
 using System.Web.Routing;
-using Swagger.Net;
 
 //[assembly: WebActivator.PreApplicationStartMethod(typeof(PSI.API.App_Start.SwaggerNet), "PreStart")]
 //[assembly: WebActivator.PostApplicationStartMethod(typeof(PSI.API.App_Start.SwaggerNet), "PostStart")]
-namespace PSI.API.App_Start 
+namespace PSI.API.App_Start
 {
-    public static class SwaggerNet 
+    public static class SwaggerNet
     {
-        public static void PreStart() 
+        public static void PreStart()
         {
             RouteTable.Routes.MapHttpRoute(
                 name: "SwaggerApi",
                 routeTemplate: "api/docs/{controller}",
                 defaults: new { swagger = true }
-            );            
+            );
         }
-        
-        public static void PostStart() 
+
+        public static void PostStart()
         {
             var config = GlobalConfiguration.Configuration;
 
             config.Filters.Add(new SwaggerActionFilter());
-            
+
             try
             {
                 config.Services.Replace(typeof(IDocumentationProvider),

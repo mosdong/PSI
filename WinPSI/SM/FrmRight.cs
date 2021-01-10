@@ -1,16 +1,12 @@
-﻿using PSI.BLL;
-using PSI.Common;
+﻿using PSI.Common;
 using PSI.Models.DModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using WinPSI.FModels;
+using WinPSI.Request;
 
 namespace WinPSI.SM
 {
@@ -22,10 +18,7 @@ namespace WinPSI.SM
         }
         private string uName = "";
         int roleId = 0;
-        bool blFlag = false;
-        private RoleBLL roleBLL = new RoleBLL();
-        private MenuBLL menuBLL = new MenuBLL();
-        private ToolMenuBLL tmBLL = new ToolMenuBLL();
+        bool blFlag = false;   
         private bool isAdmin = false;
         /// <summary>
         /// 页面加载
@@ -40,12 +33,12 @@ namespace WinPSI.SM
                 //tag  菜单项----loginUserName  
                 //角色管理页面  权限分配按钮 roleId=0
                 //分配权限操作列  ---RoleId>0 
-                if(this.Tag!=null)
+                if (this.Tag != null)
                 {
                     Type tagType = this.Tag.GetType();
                     if (tagType == typeof(string))
                         uName = this.Tag.ToString();
-                    else if(tagType==typeof(FRightModel))
+                    else if (tagType == typeof(FRightModel))
                     {
                         FRightModel fModel = this.Tag as FRightModel;
                         uName = fModel.UName;
@@ -72,12 +65,12 @@ namespace WinPSI.SM
         /// </summary>
         private void LoadTvToolMenus()
         {
-            List<ToolMenuInfoModel> list = tmBLL.GetToolMenuList();
+            List<ToolMenuInfoModel> list = RequestStar.GetToolMenuList();
             tvTMenus.Nodes.Clear();
             tvTMenus.CheckBoxes = true;
             TreeNode root = FormUtility.CreateNode("0", "系统工具栏菜单");
             tvTMenus.Nodes.Add(root);
-            foreach(ToolMenuInfoModel tmi in list)
+            foreach (ToolMenuInfoModel tmi in list)
             {
                 TreeNode tn = FormUtility.CreateNode(tmi.TMenuId.ToString(), tmi.TMenuName);
                 root.Nodes.Add(tn);
@@ -90,7 +83,7 @@ namespace WinPSI.SM
         /// </summary>
         private void LoadTvMenus()
         {
-            List<MenuInfoModel> list = menuBLL.GetTvMenus();
+            List<MenuInfoModel> list = RequestStar.GetTvMenus();
             tvMenus.Nodes.Clear();
             tvMenus.CheckBoxes = true;
             TreeNode root = FormUtility.CreateNode("0", "系统菜单");
@@ -106,7 +99,7 @@ namespace WinPSI.SM
         /// <param name="menuList"></param>
         /// <param name="pNode"></param>
         /// <param name="parentId"></param>
-        private void CreateMenuNode(List<MenuInfoModel> menuList,TreeNode pNode,int parentId)
+        private void CreateMenuNode(List<MenuInfoModel> menuList, TreeNode pNode, int parentId)
         {
             var childList = menuList.Where(m => m.ParentId == parentId);
             foreach (var menu in childList)
@@ -119,7 +112,7 @@ namespace WinPSI.SM
 
         private void LoadCboRoles()
         {
-            List<RoleInfoModel> list = roleBLL.GetAllRoles();
+            List<RoleInfoModel> list = RequestStar.GetAllRoles();
             list.Insert(0, new RoleInfoModel()
             {
                 RoleId = 0,
@@ -138,11 +131,11 @@ namespace WinPSI.SM
         /// <param name="e"></param>
         private void cboRoles_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(blFlag)
+            if (blFlag)
             {
                 int rId = cboRoles.SelectedValue.GetInt();
                 CheckIsAdmin(rId);
-               if(isAdmin)
+                if (isAdmin)
                 {
                     //把所有节点选中，不能进行权限提交设置
                     tvMenus.Nodes[0].Checked = true;
@@ -158,12 +151,12 @@ namespace WinPSI.SM
                     tvTMenus.Nodes[0].Checked = false;
                     CheckAllNodes(tvMenus.Nodes[0]);
                     CheckAllNodes(tvTMenus.Nodes[0]);
-                    if (rId>0)
+                    if (rId > 0)
                     {
                         //加载权限数据
                         //获取数据   角色菜单    角色工具栏
-                        List<int> menuIds = menuBLL.GetRoleMenuIds(rId);
-                        List<int> tMenuIds = tmBLL.GetRoleTMenuIds(rId);
+                        List<int> menuIds = RequestStar.GetRoleMenuIds(rId);
+                        List<int> tMenuIds = RequestStar.GetRoleTMenuIds(rId);
                         //加载 处理节点勾选
                         if (menuIds.Count > 0)
                             LoadCheckedNodes(menuIds, tvMenus.Nodes[0]);
@@ -190,11 +183,11 @@ namespace WinPSI.SM
         /// </summary>
         /// <param name="Ids"></param>
         /// <param name="pNode"></param>
-        private void LoadCheckedNodes(List<int> Ids,TreeNode pNode)
+        private void LoadCheckedNodes(List<int> Ids, TreeNode pNode)
         {
-            foreach(TreeNode tn in pNode.Nodes)
+            foreach (TreeNode tn in pNode.Nodes)
             {
-                if(Ids.Contains(tn.Name.GetInt()))
+                if (Ids.Contains(tn.Name.GetInt()))
                 {
                     tn.Checked = true;
                 }
@@ -202,7 +195,7 @@ namespace WinPSI.SM
             }
         }
 
-      
+
 
         /// <summary>
         /// 检查一个角色是否是超级管理员角色
@@ -211,8 +204,8 @@ namespace WinPSI.SM
         private void CheckIsAdmin(int rId)
         {
             isAdmin = false;
-            RoleInfoModel roleInfo = roleBLL.GetRole(rId);
-            if(roleInfo!=null)
+            RoleInfoModel roleInfo = RequestStar.GetRole(rId);
+            if (roleInfo != null)
             {
                 if (roleInfo.IsAdmin == 1)
                     isAdmin = true;
@@ -235,19 +228,19 @@ namespace WinPSI.SM
                 //设置当前节点的父节点的勾选处理
                 SetParentNodesCheckState(e.Node);
             }
-            
+
         }
 
         //递归处理 父节点勾选
         private void SetParentNodesCheckState(TreeNode node)
         {
             TreeNode pNode = node.Parent;//父节点
-            if(pNode!=null)
+            if (pNode != null)
             {
                 bool bl = false;
-                foreach(TreeNode tn in pNode.Nodes)
+                foreach (TreeNode tn in pNode.Nodes)
                 {
-                    if(tn.Checked)
+                    if (tn.Checked)
                     {
                         bl = true;
                         break;
@@ -288,7 +281,7 @@ namespace WinPSI.SM
         {
             int rId = cboRoles.SelectedValue.GetInt();
             CheckIsAdmin(rId);
-            if(rId ==0)
+            if (rId == 0)
             {
                 MsgBoxHelper.MsgErrorShow("请选择要设置权限的角色！");
                 return;
@@ -300,33 +293,33 @@ namespace WinPSI.SM
                 List<int> menuIds = new List<int>();
                 menuIds = GetMenuIds(rId, menuIds, tvMenus.Nodes[0]);
                 bool bl = false;//执行结果
-                if(menuIds.Count == 0 && tMenuIds.Count== 0)
+                if (menuIds.Count == 0 && tMenuIds.Count == 0)
                 {
                     MsgBoxHelper.MsgErrorShow("请设置该角色的菜单和工具栏权限！");
                     return;
                 }
-                else if(menuIds.Count ==0 && tMenuIds.Count >0)
+                else if (menuIds.Count == 0 && tMenuIds.Count > 0)
                 {
-                    if(MsgBoxHelper.MsgBoxConfirm("权限设置","您没有设置系统菜单权限，将会无法使用系统菜单功能！是否继续？")==DialogResult.Yes)
+                    if (MsgBoxHelper.MsgBoxConfirm("权限设置", "您没有设置系统菜单权限，将会无法使用系统菜单功能！是否继续？") == DialogResult.Yes)
                     {
                         //设置工具栏权限
-                        bl = roleBLL.SetRoleRight(rId, null, tMenuIds,uName);
+                        bl = RequestStar.SetRoleRight(rId, null, tMenuIds, uName);
                     }
                 }
-                else if(menuIds.Count > 0 && tMenuIds.Count == 0)
+                else if (menuIds.Count > 0 && tMenuIds.Count == 0)
                 {
                     if (MsgBoxHelper.MsgBoxConfirm("权限设置", "您没有设置工具菜单权限，将会无法使用工具栏菜单功能！是否继续？") == DialogResult.Yes)
                     {
                         //设置菜单权限
-                        bl = roleBLL.SetRoleRight(rId, menuIds, null, uName);
+                        bl = RequestStar.SetRoleRight(rId, menuIds, null, uName);
                     }
                 }
-                else 
+                else
                 {
                     //设置菜单和工具栏权限
-                    bl = roleBLL.SetRoleRight(rId, menuIds, tMenuIds, uName);
+                    bl = RequestStar.SetRoleRight(rId, menuIds, tMenuIds, uName);
                 }
-                if(bl)
+                if (bl)
                 {
                     MsgBoxHelper.MsgBoxShow("权限设置", "权限设置保存成功！");
                 }
@@ -336,8 +329,8 @@ namespace WinPSI.SM
                     return;
                 }
             }
-            
-          
+
+
         }
 
         /// <summary>
@@ -348,9 +341,9 @@ namespace WinPSI.SM
         private List<int> GetToolMenuIds(int roleId)
         {
             List<int> tMenuIds = new List<int>();
-            foreach(TreeNode tn in tvTMenus.Nodes[0].Nodes)
+            foreach (TreeNode tn in tvTMenus.Nodes[0].Nodes)
             {
-                if(tn.Checked)
+                if (tn.Checked)
                 {
                     int tMenuId = tn.Name.GetInt();
                     tMenuIds.Add(tMenuId);
@@ -366,11 +359,11 @@ namespace WinPSI.SM
         /// <param name="menuIds"></param>
         /// <param name="pNode"></param>
         /// <returns></returns>
-        private List<int> GetMenuIds(int roleId,List<int> menuIds,TreeNode pNode)
+        private List<int> GetMenuIds(int roleId, List<int> menuIds, TreeNode pNode)
         {
-            foreach(TreeNode tn in pNode.Nodes)
+            foreach (TreeNode tn in pNode.Nodes)
             {
-                if(tn.Checked)
+                if (tn.Checked)
                 {
                     int menuId = tn.Name.GetInt();
                     if (!menuIds.Contains(menuId))

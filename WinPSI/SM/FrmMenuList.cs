@@ -1,15 +1,9 @@
-﻿using PSI.BLL;
-using PSI.Models.DModels;
+﻿using PSI.Models.DModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using WinPSI.FModels;
+using WinPSI.Request;
 
 namespace WinPSI.SM
 {
@@ -18,8 +12,7 @@ namespace WinPSI.SM
         public FrmMenuList()
         {
             InitializeComponent();
-        }
-        private MenuBLL menuBLL = new MenuBLL();
+        } 
         private string uName = "";//登录者账号
         private void FrmMenuList_Load(object sender, EventArgs e)
         {
@@ -40,7 +33,7 @@ namespace WinPSI.SM
         {
             string keywords = txtKeyWords.Text.Trim();
             //调用BLL 查询方法，获取菜单数据
-            List<MenuInfoModel> list = menuBLL.GetMenuListByKeyWords(keywords);
+            List<MenuInfoModel> list = RequestStar.GetMenuListByKeyWords(keywords);
             dgvMenus.AutoGenerateColumns = false;
             dgvMenus.DataSource = list;
 
@@ -56,7 +49,7 @@ namespace WinPSI.SM
         /// </summary>
         /// <param name="actType"></param>
         /// <param name="menuId"></param>
-        private void ShowMenuInfoPage(int actType,int menuId)
+        private void ShowMenuInfoPage(int actType, int menuId)
         {
             FrmMenuInfo fMenu = new FrmMenuInfo();
             fMenu.Tag = new FInfoModel()
@@ -87,7 +80,7 @@ namespace WinPSI.SM
         /// <param name="e"></param>
         private void tsbtnEdit_Click(object sender, EventArgs e)
         {
-            if(dgvMenus.SelectedRows.Count >0)
+            if (dgvMenus.SelectedRows.Count > 0)
             {
                 DataGridViewRow row = dgvMenus.SelectedRows[0];
                 MenuInfoModel menuInfo = row.DataBoundItem as MenuInfoModel;
@@ -124,7 +117,7 @@ namespace WinPSI.SM
         {
             Action act = () =>
             {
-                if(e.RowIndex>=0)
+                if (e.RowIndex >= 0)
                 {
                     DataGridViewCell curCell = dgvMenus.Rows[e.RowIndex].Cells[e.ColumnIndex];
                     string cellVal = curCell.FormattedValue.ToString();
@@ -138,20 +131,20 @@ namespace WinPSI.SM
                             ShowMenuInfoPage(2, menuInfo.MId);
                             break;
                         case "删除":
-                            if(MsgBoxHelper.MsgBoxConfirm("删除菜单","您确定要删除该菜单信息吗？删除菜单会连同菜单及其角色菜单关系数据一并删除？")==DialogResult.Yes)
+                            if (MsgBoxHelper.MsgBoxConfirm("删除菜单", "您确定要删除该菜单信息吗？删除菜单会连同菜单及其角色菜单关系数据一并删除？") == DialogResult.Yes)
                             {
                                 //删除
                                 List<int> menuIds = new List<int>();
                                 menuIds.Add(menuInfo.MId);
-                                bool bl = menuBLL.DeleteMenu(menuIds, 0);
-                                if(bl)
+                                bool bl = RequestStar.DeleteMenu(menuIds, 0);
+                                if (bl)
                                 {
                                     MsgBoxHelper.MsgBoxShow("删除菜单", $"菜单：{menuInfo.MName} 删除成功！");
                                     LoadMenuList();
                                 }
                                 else
                                 {
-                                    MsgBoxHelper.MsgErrorShow( $"菜单：{menuInfo.MName} 删除失败！");
+                                    MsgBoxHelper.MsgErrorShow($"菜单：{menuInfo.MName} 删除失败！");
                                     return;
                                 }
                             }
@@ -160,10 +153,10 @@ namespace WinPSI.SM
                 }
             };
             act.TryCatch("菜单数据操作异常！");
-            
+
         }
 
-       
+
 
         /// <summary>
         /// 删除菜单信息  一条或多条都可以
@@ -172,12 +165,12 @@ namespace WinPSI.SM
         /// <param name="e"></param>
         private void tsbtnDelete_Click(object sender, EventArgs e)
         {
-            if(dgvMenus.SelectedRows.Count ==0)
+            if (dgvMenus.SelectedRows.Count == 0)
             {
                 MsgBoxHelper.MsgErrorShow("请选择要删除的菜单信息！");
                 return;
             }
-            if(MsgBoxHelper.MsgBoxConfirm("菜单删除", "您确定要删除选择的菜单信息吗？删除菜单会连同菜单及其角色菜单关系数据一并删除？")==DialogResult.Yes)
+            if (MsgBoxHelper.MsgBoxConfirm("菜单删除", "您确定要删除选择的菜单信息吗？删除菜单会连同菜单及其角色菜单关系数据一并删除？") == DialogResult.Yes)
             {
                 List<int> menuIds = new List<int>();
                 foreach (DataGridViewRow row in dgvMenus.SelectedRows)
@@ -185,7 +178,7 @@ namespace WinPSI.SM
                     MenuInfoModel menuInfo = row.DataBoundItem as MenuInfoModel;
                     menuIds.Add(menuInfo.MId);
                 }
-                bool bl = menuBLL.DeleteMenu(menuIds, 0);
+                bool bl = RequestStar.DeleteMenu(menuIds, 0);
                 if (bl)
                 {
                     MsgBoxHelper.MsgBoxShow("删除菜单", "选择的菜单信息删除成功！");

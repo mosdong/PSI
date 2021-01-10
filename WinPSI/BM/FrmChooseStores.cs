@@ -18,7 +18,7 @@ namespace WinPSI.BM
         public FrmChooseStores()
         {
             InitializeComponent();
-        } 
+        }
         public event Action SetStore;//设置选择的仓库
         private string typeName = "";
         private string uName = "";
@@ -38,8 +38,8 @@ namespace WinPSI.BM
                     btnAdd.Enabled = false;
                 }
                 LoadTvSTypes();//仓库类别信息 treeView
-                            LoadStoreList();//条件查询仓库列表
-                        };
+                LoadStoreList();//条件查询仓库列表
+            };
             act.TryCatch("加载仓库信息出现异常");
         }
 

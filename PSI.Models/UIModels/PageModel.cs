@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace PSI.Models.UIModels
 {
-        /// <summary>
-        /// 分页模型
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
+    /// <summary>
+    /// 分页模型
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class PageModel<T>
     {
         public int TotalCount { get; set; }

@@ -1,15 +1,9 @@
-﻿using PSI.BLL;
-using PSI.Models.DModels;
+﻿using PSI.Models.DModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using WinPSI.FModels;
+using WinPSI.Request;
 
 namespace WinPSI.SM
 {
@@ -19,9 +13,7 @@ namespace WinPSI.SM
         {
             InitializeComponent();
         }
-        private string uName = "";
-        private ToolMenuBLL tmBLL = new ToolMenuBLL();
-        private ToolGroupBLL tgBLL = new ToolGroupBLL();
+        private string uName = "";  
         /// <summary>
         /// 页面加载
         /// </summary>
@@ -29,7 +21,8 @@ namespace WinPSI.SM
         /// <param name="e"></param>
         private void FrmToolMenuList_Load(object sender, EventArgs e)
         {
-            Action act =()=>{
+            Action act = () =>
+            {
                 if (this.Tag != null)
                     uName = this.Tag.ToString();
                 chkShowDel.Checked = false;
@@ -49,10 +42,10 @@ namespace WinPSI.SM
             bool blShow = chkShowDel.Checked;
             SetActColsShow(blShow);//控制操作列的显示
             //获取数据
-            List<ToolMenuInfoModel> list = tmBLL.GetToolMenuInfos(keywords,blShow);
-           
+            List<ToolMenuInfoModel> list = RequestStar.GetToolMenuInfos(keywords, blShow);
+
             //判断是否有数据，处理工具栏中按钮项 启用处理
-            if(list.Count>0)
+            if (list.Count > 0)
             {
                 dgvTMenus.AutoGenerateColumns = false;
                 dgvTMenus.DataSource = list;
@@ -67,7 +60,7 @@ namespace WinPSI.SM
 
         private void SetActColsShow(bool blShow)
         {
-            if(blShow)
+            if (blShow)
             {
                 dgvTMenus.Columns["Edit"].Visible = false;
                 dgvTMenus.Columns["Del"].Visible = false;
@@ -100,19 +93,19 @@ namespace WinPSI.SM
 
         private void LoadTGroups()
         {
-            List<ToolGroupInfoModel> list = tgBLL.GetToolGroups();
+            List<ToolGroupInfoModel> list = RequestStar.GetToolGroups();
             //获取下拉框列
             DataGridViewComboBoxColumn col = dgvTMenus.Columns["TGroupId"] as DataGridViewComboBoxColumn;
             col.DisplayMember = "TGroupName";
             col.ValueMember = "TGroupId";
             col.DataSource = list;
-         
+
         }
 
         private void btnQuery_Click(object sender, EventArgs e)
         {
             LoadTMenuList();
-            if(dgvTMenus.Rows.Count==0)
+            if (dgvTMenus.Rows.Count == 0)
             {
                 MsgBoxHelper.MsgErrorShow("没有符合条件的数据!");
                 return;
@@ -146,7 +139,7 @@ namespace WinPSI.SM
         /// </summary>
         /// <param name="tmenuId"></param>
         /// <param name="actType"></param>
-        private void  ShowTMenuInfoPage(int tmenuId,int actType)
+        private void ShowTMenuInfoPage(int tmenuId, int actType)
         {
             FrmTMenuInfo fTMenuInfo = new FrmTMenuInfo();
             fTMenuInfo.Tag = new FInfoModel()
@@ -166,7 +159,7 @@ namespace WinPSI.SM
         /// <param name="e"></param>
         private void tsbtnEdit_Click(object sender, EventArgs e)
         {
-            if(dgvTMenus.SelectedRows.Count >0)
+            if (dgvTMenus.SelectedRows.Count > 0)
             {
                 ToolMenuInfoModel tmInfo = dgvTMenus.SelectedRows[0].DataBoundItem as ToolMenuInfoModel;
                 ShowTMenuInfoPage(tmInfo.TMenuId, 2);
@@ -225,13 +218,13 @@ namespace WinPSI.SM
         /// <param name="e"></param>
         private void tsbtnDelete_Click(object sender, EventArgs e)
         {
-            if(dgvTMenus.SelectedRows.Count==0)
+            if (dgvTMenus.SelectedRows.Count == 0)
             {
                 MsgBoxHelper.MsgErrorShow("您没有选择要删除的工具菜单项！");
                 return;
             }
             string title = "删除工具菜单项";
-            if (MsgBoxHelper.MsgBoxConfirm(title,"您确定要删除这些工具菜单项数据吗？会连同角色工具菜单关系数据一并删除？")==DialogResult.Yes)
+            if (MsgBoxHelper.MsgBoxConfirm(title, "您确定要删除这些工具菜单项数据吗？会连同角色工具菜单关系数据一并删除？") == DialogResult.Yes)
             {
                 //获取要删除的工具菜单编号
                 List<int> delIds = new List<int>();
@@ -241,7 +234,7 @@ namespace WinPSI.SM
                     delIds.Add(tmInfo.TMenuId);
                 }
                 //删除操作
-                bool bl = tmBLL.DeleteToolMenusLogic(delIds);
+                bool bl = RequestStar.DeleteToolMenusLogic(delIds);
                 if (bl)
                 {
                     MsgBoxHelper.MsgBoxShow(title, "选择的工具菜单项删除成功！");
@@ -259,12 +252,12 @@ namespace WinPSI.SM
         {
             Action act = () =>
             {
-                if(e.RowIndex>=0)
+                if (e.RowIndex >= 0)
                 {
                     var curCell = dgvTMenus.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                    ToolMenuInfoModel tmInfo= dgvTMenus.Rows[e.RowIndex].DataBoundItem as ToolMenuInfoModel;
+                    ToolMenuInfoModel tmInfo = dgvTMenus.Rows[e.RowIndex].DataBoundItem as ToolMenuInfoModel;
                     string cellVal = curCell.FormattedValue.ToString();
-                    switch(cellVal)
+                    switch (cellVal)
                     {
                         case "修改":
                             ShowTMenuInfoPage(tmInfo.TMenuId, 2);
@@ -279,7 +272,7 @@ namespace WinPSI.SM
                 }
             };
             act.TryCatch("修改或删除工具菜单项数据异常！");
-           
+
         }
 
         /// <summary>
@@ -292,7 +285,7 @@ namespace WinPSI.SM
             if (MsgBoxHelper.MsgBoxConfirm(title, "您确定要恢复该工具菜单项数据吗？会连同角色工具菜单关系数据一并恢复？") == DialogResult.Yes)
             {
                 //角色工具菜单关系数据   工具菜单信息
-                bool bl = tmBLL.RecoverToolMenu(tmInfo.TMenuId);
+                bool bl = RequestStar.RecoverToolMenu(tmInfo.TMenuId);
                 if (bl)
                 {
                     MsgBoxHelper.MsgBoxShow(title, $"工具菜单项：{tmInfo.TMenuName} 恢复成功！");
@@ -312,8 +305,8 @@ namespace WinPSI.SM
             {
                 //删除操作 
                 //角色工具菜单关系数据   工具菜单信息
-                bool bl=tmBLL.DeleteToolMenuLogic(tmInfo.TMenuId);
-                if(bl)
+                bool bl = RequestStar.DeleteToolMenuLogic(tmInfo.TMenuId);
+                if (bl)
                 {
                     MsgBoxHelper.MsgBoxShow(title, $"工具菜单项：{tmInfo.TMenuName} 删除成功！");
                     LoadTMenuList();
@@ -354,7 +347,7 @@ namespace WinPSI.SM
                     delIds.Add(tmInfo.TMenuId);
                 }
                 //恢复操作
-                bool bl = tmBLL.RecoverToolMenus(delIds);
+                bool bl = RequestStar.RecoverToolMenus(delIds);
                 if (bl)
                 {
                     MsgBoxHelper.MsgBoxShow(title, "选择的工具菜单项恢复成功！");
@@ -370,6 +363,6 @@ namespace WinPSI.SM
 
         private void button1_Click(object sender, EventArgs e)
         {
-                }
+        }
     }
 }

@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PSI.Models.VModels
+﻿namespace PSI.Models.VModels
 {
     /// <summary>
     /// 商品库存分布信息实体
     /// </summary>
-   public class GoodsStoreStockModel
+    public class GoodsStoreStockModel
     {
         public int Id { get; set; }
 

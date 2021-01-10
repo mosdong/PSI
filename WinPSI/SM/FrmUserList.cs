@@ -1,16 +1,9 @@
-﻿using PSI.BLL;
-using PSI.Common;
-using PSI.Models.DModels;
+﻿using PSI.Models.DModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using WinPSI.FModels;
+using WinPSI.Request;
 
 namespace WinPSI.SM
 {
@@ -20,8 +13,7 @@ namespace WinPSI.SM
         {
             InitializeComponent();
         }
-        string uName = "";
-        UserBLL userBLL = new UserBLL();
+        string uName = ""; 
         private void btnAdd_Click(object sender, EventArgs e)
         {
             ShowUserInfoPage(1, 0);
@@ -64,7 +56,7 @@ namespace WinPSI.SM
         private void LoadUserList()
         {
             string uName = txtUName.Text.Trim();
-            List<UserInfoModel> userList = userBLL.GetUserList(uName);
+            List<UserInfoModel> userList = RequestStar.GetUserList(uName);
             dgvUsers.AutoGenerateColumns = false;
             dgvUsers.DataSource = userList;
             foreach (DataGridViewRow row in dgvUsers.Rows)
@@ -125,9 +117,9 @@ namespace WinPSI.SM
             {
                 bool bl = false;
                 if (type == 1)
-                    bl = userBLL.EnableUser(userId);
+                    bl = RequestStar.EnableUser(userId);
                 else
-                    bl = userBLL.StopUser(userId);
+                    bl = RequestStar.StopUser(userId);
                 if (bl)
                 {
                     MsgBoxHelper.MsgBoxShow($"用户{msg}", $"该用户{msg}成功！");
@@ -190,10 +182,10 @@ namespace WinPSI.SM
                     userIds.Add(userInfo.UserId);
                 }
                 bool bl = false;
-                if(type ==1)
-                    bl = userBLL.EnableUsers(userIds);
+                if (type == 1)
+                    bl = RequestStar.EnableUsers(userIds);
                 else
-                    bl = userBLL.StopUsers(userIds);
+                    bl = RequestStar.StopUsers(userIds);
                 if (bl)
                 {
                     MsgBoxHelper.MsgBoxShow($"用户{actMsg}", $"该用户{actMsg}成功！");

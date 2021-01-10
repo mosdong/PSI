@@ -1,16 +1,12 @@
 ﻿using PSI.Common;
 using PSI.DbUtility;
 using PSI.Models.DModels;
-using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PSI.DAL
 {
-    public class GoodsUnitDAL:BaseDAL<GoodsUnitInfoModel>
+    public class GoodsUnitDAL : BaseDAL<GoodsUnitInfoModel>
     {
         /// <summary>
         /// 获取所有的单位列表
@@ -20,7 +16,7 @@ namespace PSI.DAL
         public List<GoodsUnitInfoModel> GetAllUnits(int isDeleted)
         {
             string strWhere = $"IsDeleted={isDeleted} order by GUnitOrder";
-           return GetModelList(strWhere, "GUnitId,GUnitName,GUnitPYNo,GUnitOrder");
+            return GetModelList(strWhere, "GUnitId,GUnitName,GUnitPYNo,GUnitOrder");
         }
         /// <summary>
         /// 判断单位名称是否已存在
@@ -54,7 +50,7 @@ namespace PSI.DAL
         /// <returns></returns>
         public bool AddGoodsUnit(GoodsUnitInfoModel guInfo)
         {
-            return Add(guInfo, "GUnitName,GUnitPYNo,GUnitOrder,Creator", 0)>0;
+            return Add(guInfo, "GUnitName,GUnitPYNo,GUnitOrder,Creator", 0) > 0;
         }
 
         /// <summary>
@@ -62,11 +58,11 @@ namespace PSI.DAL
         /// </summary>
         /// <param name="guInfo"></param>
         /// <returns></returns>
-        public bool UpdatGoodsUnit(GoodsUnitInfoModel guInfo,bool isUpdateName,string oldName)
+        public bool UpdatGoodsUnit(GoodsUnitInfoModel guInfo, bool isUpdateName, string oldName)
         {
             string cols = "GUnitId,GUnitName,GUnitPYNo,GUnitOrder";
             if (!isUpdateName)
-              return Update(guInfo,cols, "");
+                return Update(guInfo, cols, "");
             else
             {
                 List<CommandInfo> list = new List<CommandInfo>();
@@ -85,8 +81,8 @@ namespace PSI.DAL
                 list.Add(new CommandInfo()
                 {
                     CommandText = "update GoodsInfos set GUnit=@GUnit where GUnit=@OldGUnit",
-                    IsProc=false,
-                    Paras=paras
+                    IsProc = false,
+                    Paras = paras
                 });
                 return SqlHelper.ExecuteTrans(list);
             }

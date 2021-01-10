@@ -1,8 +1,8 @@
+using PSI.API.Areas.HelpPage.ModelDescriptions;
+using PSI.API.Areas.HelpPage.Models;
 using System;
 using System.Web.Http;
 using System.Web.Mvc;
-using PSI.API.Areas.HelpPage.ModelDescriptions;
-using PSI.API.Areas.HelpPage.Models;
 
 namespace PSI.API.Areas.HelpPage.Controllers
 {

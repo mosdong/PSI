@@ -6,12 +6,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PSI.DAL
 {
-    public  class UserDAL:BaseDAL<UserInfoModel>
+    public class UserDAL : BaseDAL<UserInfoModel>
     {
         /// <summary>
         /// 登录，返回UserId
@@ -19,7 +17,7 @@ namespace PSI.DAL
         /// <param name="uName"></param>
         /// <param name="uPwd"></param>
         /// <returns></returns>
-        public int Login(string uName,string uPwd)
+        public int Login(string uName, string uPwd)
         {
             string strWhere = "UserName=@UserName and UserPwd=@UserPwd and UserState=1";
             SqlParameter[] paras =
@@ -44,9 +42,9 @@ namespace PSI.DAL
             string strWhere = " 1=1 and UserName <> (select UserName from UserInfos where UserId in (select UserId from UserRoleInfos where RoleId = (select RoleId from RoleInfos where IsAdmin=1))) and IsDeleted=0";
             if (!string.IsNullOrEmpty(uName))
                 strWhere += " and UserName like @uName";
-            SqlParameter paraName = new SqlParameter("@uName", "%"+uName+"%");
+            SqlParameter paraName = new SqlParameter("@uName", "%" + uName + "%");
             string cols = "UserId,UserName,UserState,CreateTime";
-            return GetModelList(strWhere,cols,paraName);
+            return GetModelList(strWhere, cols, paraName);
         }
 
         /// <summary>
@@ -55,7 +53,7 @@ namespace PSI.DAL
         /// <param name="userId"></param>
         /// <param name="userState"></param>
         /// <returns></returns>
-        public bool UpdateUserState(int userId,int userState)
+        public bool UpdateUserState(int userId, int userState)
         {
             string sql = "update UserInfos set UserState=@userState where UserId=@userId";
             SqlParameter[] paras =
@@ -72,7 +70,7 @@ namespace PSI.DAL
         /// <param name="userIds"></param>
         /// <param name="userState"></param>
         /// <returns></returns>
-        public bool UpdateUserSate(List<int> userIds,int userState)
+        public bool UpdateUserSate(List<int> userIds, int userState)
         {
             //string strids = string.Join(",", userIds);
             //string sql = $"update UserInfos set UserState=@userState where UserId in ({strids})";
@@ -125,7 +123,7 @@ namespace PSI.DAL
         /// <param name="userInfo"></param>
         /// <param name="urList"></param>
         /// <returns></returns>
-        public bool AddUserInfo(UserInfoModel userInfo,List<UserRoleInfoModel> urList)
+        public bool AddUserInfo(UserInfoModel userInfo, List<UserRoleInfoModel> urList)
         {
             string colUsers = "UserName,UserPwd,UserState,Creator";
             SqlModel inUser = CreateSql.GetInsertSqlAndParas(userInfo, colUsers, 1);
@@ -142,10 +140,10 @@ namespace PSI.DAL
                     }
                     object oId = cmd.ExecuteScalar();
                     cmd.Parameters.Clear();
-                    if(oId!=null && oId.ToString()!="")
+                    if (oId != null && oId.ToString() != "")
                     {
                         int userId = oId.GetInt();
-                        if(urList.Count>0)
+                        if (urList.Count > 0)
                         {
                             string colsUserRole = "UserId,RoleId,Creator";
                             foreach (var ur in urList)
@@ -163,7 +161,7 @@ namespace PSI.DAL
                                 cmd.Parameters.Clear();
                             }
                         }
-                       
+
                     }
                     cmd.Transaction.Commit();
                     return true;
@@ -171,9 +169,9 @@ namespace PSI.DAL
                 catch (Exception ex)
                 {
                     cmd.Transaction.Rollback();
-                    throw new Exception("添加用户执行异常！", ex);                  
+                    throw new Exception("添加用户执行异常！", ex);
                 }
-             
+
             });
         }
 
@@ -184,7 +182,7 @@ namespace PSI.DAL
         /// <param name="urList"></param>
         /// <param name="urListNew"></param>
         /// <returns></returns>
-        public bool UpdateUserInfo(UserInfoModel userInfo, List<UserRoleInfoModel> urList,List<UserRoleInfoModel> urListNew)
+        public bool UpdateUserInfo(UserInfoModel userInfo, List<UserRoleInfoModel> urList, List<UserRoleInfoModel> urListNew)
         {
             List<CommandInfo> comList = new List<CommandInfo>();
             string colsUser = "UserId,UserName";
@@ -199,7 +197,7 @@ namespace PSI.DAL
                 IsProc = false,
                 Paras = upUser.SqlParaArray
             });
-            if(urList.Count >0)
+            if (urList.Count > 0)
             {
                 //删除取消的角色关系数据
                 string roleIds = string.Join(",", urList.Select(ur => ur.RoleId));
@@ -224,7 +222,7 @@ namespace PSI.DAL
                     });
                 }
             }
-           
+
             return SqlHelper.ExecuteTrans(comList);
         }
 
@@ -251,14 +249,14 @@ namespace PSI.DAL
         /// <param name="uName"></param>
         /// <param name="enNewPwd"></param>
         /// <returns></returns>
-        public bool UpdateUserPwd(string uName,string enNewPwd)
+        public bool UpdateUserPwd(string uName, string enNewPwd)
         {
             string sql = "update UserInfos set UserPwd=@userPwd where UserName=@uName";
             SqlParameter[] paras = {
                 new SqlParameter("@userPwd", enNewPwd),
                 new SqlParameter("@uName", uName)
             };
-            return SqlHelper.ExecuteNonQuery(sql, 1, paras)>0;
+            return SqlHelper.ExecuteNonQuery(sql, 1, paras) > 0;
         }
     }
 }

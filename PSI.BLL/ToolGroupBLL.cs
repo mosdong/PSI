@@ -1,14 +1,10 @@
 ﻿using PSI.DAL;
 using PSI.Models.DModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PSI.BLL
 {
-    public class ToolGroupBLL:BaseBLL<ToolGroupInfoModel>
+    public class ToolGroupBLL : BaseBLL<ToolGroupInfoModel>
     {
         ToolGroupDAL tgDAL = new ToolGroupDAL();
         /// <summary>
@@ -61,7 +57,7 @@ namespace PSI.BLL
 
         public bool ConfirmToolGroup(ToolGroupInfoModel tgInfo)
         {
-            if(tgInfo!=null)
+            if (tgInfo != null)
             {
                 if (tgInfo.TGroupId == 0)
                     return tgDAL.AddToolGroup(tgInfo);
@@ -103,7 +99,7 @@ namespace PSI.BLL
             //List<int> tgIds = new List<int>();
             //tgIds.Add(tgId);
             //return tgDAL.UpdateToolGroupDeleteState(tgIds, 0, 1);
-           return LogicDelete(tgId);
+            return LogicDelete(tgId);
         }
 
         /// <summary>

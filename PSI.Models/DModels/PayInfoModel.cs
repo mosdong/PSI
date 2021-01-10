@@ -1,9 +1,5 @@
 ﻿using PSI.Common.CustomAttributes;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PSI.Models.DModels
 {
@@ -32,6 +28,6 @@ namespace PSI.Models.DModels
 		/// PayType
         /// </summary>		
         public string PayType { get; set; }
-        
+
     }
 }

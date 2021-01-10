@@ -1,9 +1,4 @@
 ﻿using PSI.Common.CustomAttributes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PSI.Models.VModels
 {
@@ -29,7 +24,7 @@ namespace PSI.Models.VModels
         /// <summary>
         /// GoodsPYNo
         /// </summary>		
-        public string GoodsPYNo{ get; set; }
+        public string GoodsPYNo { get; set; }
         /// <summary>
         /// GoodsSName
         /// </summary>		
@@ -41,7 +36,7 @@ namespace PSI.Models.VModels
         /// <summary>
         /// GUnit
         /// </summary>		
-        public string GUnit { get; set; }	
+        public string GUnit { get; set; }
         /// <summary>
         /// GTypeId
         /// </summary>		

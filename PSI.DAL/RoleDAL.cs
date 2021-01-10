@@ -4,12 +4,10 @@ using PSI.Models.DModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PSI.DAL
 {
-    public class RoleDAL:BaseDAL<RoleInfoModel>
+    public class RoleDAL : BaseDAL<RoleInfoModel>
     {
         /// <summary>
         /// 获取所有角色列表（主要用于绑定下拉框或列表框）
@@ -48,7 +46,7 @@ namespace PSI.DAL
         /// <returns></returns>
         public bool AddRoleInfo(RoleInfoModel roleInfo)
         {
-            return Add(roleInfo, "RoleName,Remark,Creator", 0)>0;
+            return Add(roleInfo, "RoleName,Remark,Creator", 0) > 0;
         }
 
         /// <summary>
@@ -79,10 +77,10 @@ namespace PSI.DAL
         /// <param name="roleId"></param>
         ///  <param name="delType">0 ---logic   1= real</param>
         /// <returns></returns>
-        public bool  DeleteRole(int roleId,int delType)
+        public bool DeleteRole(int roleId, int delType)
         {
             List<string> listSqls = new List<string>();
-            listSqls = GetDeleteRoleSql(delType,roleId);
+            listSqls = GetDeleteRoleSql(delType, roleId);
             return SqlHelper.ExecuteTrans(listSqls);
         }
 
@@ -92,10 +90,10 @@ namespace PSI.DAL
         /// <param name="roleIds"></param>
         /// <param name="delType"></param>
         /// <returns></returns>
-        public bool DeleteRoles(List<int> roleIds,int delType)
+        public bool DeleteRoles(List<int> roleIds, int delType)
         {
             List<string> listSqls = new List<string>();
-            foreach(int roleId in roleIds)
+            foreach (int roleId in roleIds)
             {
                 listSqls.AddRange(GetDeleteRoleSql(delType, roleId));
             }
@@ -108,7 +106,7 @@ namespace PSI.DAL
         /// <param name="delType"></param>
         /// <param name="listSqls"></param>
         /// <returns></returns>
-        private List<string> GetDeleteRoleSql(int delType,int   roleId)
+        private List<string> GetDeleteRoleSql(int delType, int roleId)
         {
             List<string> listSqls = new List<string>();
             string[] tables = { "RoleInfos", "UserRoleInfos", "RoleMenuInfos", "RoleTMenuInfos" };
@@ -137,14 +135,14 @@ namespace PSI.DAL
         /// <param name="rmList"></param>
         /// <param name="rtmList"></param>
         /// <returns></returns>
-        public bool SetRoleRight(int roleId,List<RoleMenuInfoModel> rmList,List<RoleTMenuInfoModel> rtmList)
+        public bool SetRoleRight(int roleId, List<RoleMenuInfoModel> rmList, List<RoleTMenuInfoModel> rtmList)
         {
             //先删除角色相关的权限数据  检查 ---是否存在这么一条关系数据，否---插入   不插入
             return SqlHelper.ExecuteTrans<bool>(cmd =>
             {
                 try
                 {
-                    if(rmList.Count>0)
+                    if (rmList.Count > 0)
                     {
                         string noIds = string.Join(",", rmList.Select(rm => rm.MId));
                         cmd.CommandText = $"delete from RoleMenuInfos  where MId not in ({noIds}) and RoleId={roleId}  and IsDeleted=0";
@@ -152,10 +150,10 @@ namespace PSI.DAL
                         foreach (var rm in rmList)
                         {
                             cmd.CommandText = $"select count(1) from RoleMenuInfos where RoleId={rm.RoleId} and MId = {rm.MId} and IsDeleted=0";
-                           object oCount =  cmd.ExecuteScalar();
+                            object oCount = cmd.ExecuteScalar();
                             if (oCount != null && oCount.ToString() != "")
                             {
-                                int count =oCount.GetInt();
+                                int count = oCount.GetInt();
                                 if (count == 0)
                                 {
                                     SqlModel insertModel = CreateSql.GetInsertSqlAndParas(rm, "MId,RoleId,Creator", 0);
@@ -172,7 +170,7 @@ namespace PSI.DAL
                             }
                         }
                     }
-                    if(rtmList.Count>0)
+                    if (rtmList.Count > 0)
                     {
                         string noIds = string.Join(",", rtmList.Select(rtm => rtm.TMenuId));
                         cmd.CommandText = $"delete from RoleTMenuInfos  where TMenuId not in ({noIds}) and RoleId={roleId}  and IsDeleted=0";
@@ -203,7 +201,7 @@ namespace PSI.DAL
                     cmd.Transaction.Commit();
                     return true;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     cmd.Transaction.Rollback();
                     throw new Exception("保存权限数据，执行异常！", ex);

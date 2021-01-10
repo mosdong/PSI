@@ -1,17 +1,14 @@
-﻿using PSI.BLL;
-using PSI.Models.DModels;
+﻿using PSI.Models.DModels;
 using PSI.Models.VModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.Remoting;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using WinPSI.FModels;
+using WinPSI.Request;
 
 namespace WinPSI
 {
@@ -20,10 +17,7 @@ namespace WinPSI
         public FrmMain()
         {
             InitializeComponent();
-        }
-        private MenuBLL menuBLL = new MenuBLL();
-        private ToolMenuBLL tmBLL = new ToolMenuBLL();
-        private SysBLL sysBLL = new SysBLL();
+        }   
         List<ViewUserRoleModel> urList = null;
         string uName = "";
         bool isAdmin = false;
@@ -41,11 +35,11 @@ namespace WinPSI
             {
                 IsFirst = 1;
                 //获取开账状态(暂不处理) 默认账套，编号为1
-              
+
                 if (this.Tag != null)
                 {
                     InitMainInfo();//初始化
-                    
+
                 }
             };
             act.TryCatch("主页面初始化出现异常");
@@ -77,23 +71,23 @@ namespace WinPSI
         {
             List<MenuInfoModel> menuList = new List<MenuInfoModel>();
             List<ToolMenuInfoModel> toolMenuList = new List<ToolMenuInfoModel>();
-            hasOpened = sysBLL.GetOpenState(1);
+            hasOpened = RequestStar.GetOpenState(1);
             if (isAdmin)//超级管理员
             {
                 //获取所有的菜单和工具栏菜单?
                 //1.获取菜单数据
-                menuList = menuBLL.GetMenuList(new List<int>());
+                menuList = RequestStar.GetMenuList(new List<int>());
                 //2.获取工具菜单项数据
-                toolMenuList = tmBLL.GetToolMenuList(new List<int>());
+                toolMenuList = RequestStar.GetToolMenuList(new List<int>());
             }
             else
             {
                 //加载登录者拥有的菜单和工具栏菜单?
                 List<int> roleIds = urList.Select(ur => ur.RoleId).ToList();
                 //1.获取菜单数据
-                menuList = menuBLL.GetMenuList(roleIds);
+                menuList = RequestStar.GetMenuList(roleIds);
                 //2.获取工具菜单项数据
-                toolMenuList = tmBLL.GetToolMenuList(roleIds);
+                toolMenuList = RequestStar.GetToolMenuList(roleIds);
             }
             PSIMenus.Items.Clear();
             PSITools.Items.Clear();
@@ -156,24 +150,24 @@ namespace WinPSI
             {
                 ToolMenuInfoModel tmInfo = tsbtn.Tag as ToolMenuInfoModel;
                 string mUrl = tmInfo.TMUrl;
-                if(!string.IsNullOrEmpty(mUrl))
-                     CreateForm(mUrl, tmInfo.IsTop);
+                if (!string.IsNullOrEmpty(mUrl))
+                    CreateForm(mUrl, tmInfo.IsTop);
                 else
                 {
                     //特殊响应处理
                     //退出系统操作
-                    if(tmInfo.TMDesp==ToolMenuDesp.ExitSystem.ToString())
+                    if (tmInfo.TMDesp == ToolMenuDesp.ExitSystem.ToString())
                     {
                         Application.Exit();
                     }
-                    else if(tmInfo.TMDesp == ToolMenuDesp.ChangeActor.ToString())
+                    else if (tmInfo.TMDesp == ToolMenuDesp.ChangeActor.ToString())
                     {
                         //更换操作员
                         this.Hide();
                         fLogin.Show();//不能showDialog()
                         IsFirst = 2;
                     }
-                    else if(tmInfo.TMDesp == ToolMenuDesp.RefreshMenu.ToString())
+                    else if (tmInfo.TMDesp == ToolMenuDesp.RefreshMenu.ToString())
                     {
                         //刷新菜单(菜单栏和工具栏)
                         AddMenusAndToolMenus();
@@ -187,12 +181,12 @@ namespace WinPSI
         /// </summary>
         /// <param name="url"></param>
         /// <param name="isTop"></param>
-        private void CreateForm(string url,int isTop)
+        private void CreateForm(string url, int isTop)
         {
             //程序集的名称
             string assName = this.GetType().Assembly.GetName().Name;
             string frmName = url.Substring(url.LastIndexOf('.') + 1);
-            if(!FormUtility.CheckOpenForm(frmName))
+            if (!FormUtility.CheckOpenForm(frmName))
             {
                 ObjectHandle t = Activator.CreateInstance(assName, assName + "." + url);
                 Form f = (Form)t.Unwrap();
@@ -220,7 +214,7 @@ namespace WinPSI
                     f.ShowDialog();
                 }
             }
-           
+
         }
 
         /// <summary>
@@ -235,11 +229,11 @@ namespace WinPSI
             var childList = mList.Where(m => m.ParentId == pId);
             foreach (var child in childList)
             {
-                if(child.MDesp==MenuDesp.OpenSys.ToString()&&hasOpened)
+                if (child.MDesp == MenuDesp.OpenSys.ToString() && hasOpened)
                 {
                     continue;
                 }
-                if(child.MDesp==MenuDesp.UnOpenSys.ToString()&&!hasOpened)
+                if (child.MDesp == MenuDesp.UnOpenSys.ToString() && !hasOpened)
                 {
                     continue;
                 }
@@ -251,7 +245,7 @@ namespace WinPSI
                     //alt+K
                     string sKey = child.MKey.ToString().Trim();
                     //设置Alt快捷键  Ctrl+P   Shift+C
-                    if (sKey.Length > 1 && sKey.Split('+')[0].ToLower() == "alt"&& child.ParentId==0)
+                    if (sKey.Length > 1 && sKey.Split('+')[0].ToLower() == "alt" && child.ParentId == 0)
                     {
                         mi.Text += $"(&{sKey.Split('+')[1]})";
                     }
@@ -341,8 +335,8 @@ namespace WinPSI
             if (mi.Tag != null)
             {
                 MenuInfoModel mInfo = mi.Tag as MenuInfoModel;
-                if(!string.IsNullOrEmpty(mInfo.MUrl))
-                     CreateForm(mInfo.MUrl, mInfo.IsTop);
+                if (!string.IsNullOrEmpty(mInfo.MUrl))
+                    CreateForm(mInfo.MUrl, mInfo.IsTop);
                 else
                 {
 
@@ -374,9 +368,9 @@ namespace WinPSI
         /// </summary>
         private enum ToolMenuDesp
         {
-            ExitSystem=1,
-            ChangeActor=2,
-            RefreshMenu=3
+            ExitSystem = 1,
+            ChangeActor = 2,
+            RefreshMenu = 3
         }
 
         /// <summary>
@@ -384,10 +378,10 @@ namespace WinPSI
         /// </summary>
         private enum MenuDesp
         {
-            ExitSystem=1,
-            ModifyPwd=2,
-            OpenSys=3,
-            UnOpenSys=4
+            ExitSystem = 1,
+            ModifyPwd = 2,
+            OpenSys = 3,
+            UnOpenSys = 4
         }
 
         /// <summary>
@@ -415,7 +409,7 @@ namespace WinPSI
                 InitMainInfo();
                 IsFirst = 1;
             }
-               
+
         }
         /// <summary>
         /// 关闭选项卡页面
@@ -426,36 +420,36 @@ namespace WinPSI
         {
             //获取选择的选项卡
             TabPage selPage = tcPages.SelectedTab;
-            if(selPage!=null)
+            if (selPage != null)
             {
                 tcPages.TabPages.Remove(selPage);//移除
                 FormUtility.CloseOpenForm(selPage.Name);//关闭窗体
             }
         }
 
-                private void tcPages_SizeChanged(object sender, EventArgs e)
+        private void tcPages_SizeChanged(object sender, EventArgs e)
+        {
+            if (tcPages.TabPages.Count > 0)
+            {
+                Size size = tcPages.SelectedTab.Size;
+                foreach (TabPage page in tcPages.TabPages)
                 {
-                        if(tcPages.TabPages.Count>0)
+                    foreach (Control c in page.Controls)
+                    {
+                        if (c is Form)
                         {
-                                Size size = tcPages.SelectedTab.Size;
-                                foreach(TabPage  page in tcPages.TabPages)
-                                {
-                                        foreach(Control c in page.Controls)
-                                        {
-                                                if(c is Form)
-                                                {
-                                                        Form frm = c as Form;
-                                                        frm.WindowState = FormWindowState.Normal;
-                                                        frm.SuspendLayout();
-                                                        frm.Size = size;
-                                                        frm.ResumeLayout(true);
-                                                        frm.WindowState = FormWindowState.Maximized;
-                                                }
-                                        }
-                                }
+                            Form frm = c as Form;
+                            frm.WindowState = FormWindowState.Normal;
+                            frm.SuspendLayout();
+                            frm.Size = size;
+                            frm.ResumeLayout(true);
+                            frm.WindowState = FormWindowState.Maximized;
                         }
+                    }
                 }
-
-            
+            }
         }
+
+
+    }
 }

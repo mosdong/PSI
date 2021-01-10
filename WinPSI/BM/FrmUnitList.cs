@@ -27,8 +27,8 @@ namespace WinPSI.BM
                 }
                 txtKeyWords.Clear();
                 LoadTVUnitTypes();//加载单位类别节点树
-                            LoadUnitList();//加载所有单位信息
-                        };
+                LoadUnitList();//加载所有单位信息
+            };
             act.TryCatch("单位信息加载异常！");
         }
 
@@ -319,8 +319,8 @@ namespace WinPSI.BM
         {
             Action act = () =>
             {
-                            //SelectedRows 选定行的集合（MultiSelect True ）  多个行
-                            if (dgvUnitList.SelectedRows.Count == 0)
+                //SelectedRows 选定行的集合（MultiSelect True ）  多个行
+                if (dgvUnitList.SelectedRows.Count == 0)
                 {
                     MsgBoxHelper.MsgErrorShow("请选择要删除的单位信息");
                     return;
@@ -333,8 +333,8 @@ namespace WinPSI.BM
                     foreach (DataGridViewRow row in dgvUnitList.SelectedRows)
                     {
                         ViewUnitInfoModel uInfo = row.DataBoundItem as ViewUnitInfoModel;
-                                    //如果该类别添加了商品，不允许删除
-                                    bool isUnitUse = RequestStar.CheckUnitUse(uInfo.UnitId);
+                        //如果该类别添加了商品，不允许删除
+                        bool isUnitUse = RequestStar.CheckUnitUse(uInfo.UnitId);
                         if (!isUnitUse)
                         {
                             unitIds.Add(uInfo.UnitId);
@@ -348,7 +348,7 @@ namespace WinPSI.BM
                     if (unitIds.Count > 0)
                     {
                         bool bl = RequestStar.UnitLogicDeleteList(unitIds);//执行批量删除
-                                    string sucMsg = bl ? "成功" : "失败";
+                        string sucMsg = bl ? "成功" : "失败";
                         string msg = $"选择的单位信息中符合删除要求的信息 删除 {sucMsg}!";
 
                         if (bl)

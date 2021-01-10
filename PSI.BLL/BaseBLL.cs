@@ -1,13 +1,5 @@
-﻿using PSI.Common;
-using PSI.DAL;
-using PSI.Models.UIModels;
-using System;
+﻿using PSI.DAL;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PSI.BLL
 {
@@ -56,7 +48,7 @@ namespace PSI.BLL
         ///// </summary>
         ///// <param name="t"></param>
         ///// <param name="strCols">要修改的列，包括主键列名</param>
-      
+
         ///// <returns></returns>
         //public bool Update(T t, string strCols)
         //{
@@ -84,7 +76,7 @@ namespace PSI.BLL
         /// <returns></returns>
         public bool LogicDelete(int id)
         {
-            return dal.Delete(id, 0,1);
+            return dal.Delete(id, 0, 1);
         }
 
         /// <summary>
@@ -95,7 +87,7 @@ namespace PSI.BLL
         /// <returns></returns>
         public bool Delete(int id)
         {
-            return dal.Delete(id,1, 2);
+            return dal.Delete(id, 1, 2);
         }
 
         /// <summary>
@@ -105,7 +97,7 @@ namespace PSI.BLL
         /// <returns></returns>
         public bool DeleteList(List<int> idList)
         {
-            return dal.DeleteList(idList,1,2);
+            return dal.DeleteList(idList, 1, 2);
         }
 
         public bool LogicDeleteList(List<int> idList)

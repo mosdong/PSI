@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data;
-using System.Data.SqlClient;
-using PSI.Common;
+﻿using PSI.Common;
 using PSI.DbUtility;
-using PSI.Models.UIModels;
-using System.Data.SqlTypes;
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
 
 namespace PSI.DAL
 {
-    public class BaseDAL<T>:BQuery<T> where T : class
+    public class BaseDAL<T> : BQuery<T> where T : class
     {
 
         #region 添加
@@ -22,18 +17,18 @@ namespace PSI.DAL
         /// <param name="t"></param>
         /// <param name="strCols">插入列名字符串，若为空，则全插入</param>
         /// <returns></returns>
-        public int Add(T t, string strCols,int isReturn)
+        public int Add(T t, string strCols, int isReturn)
         {
             if (t == null)
                 return 0;
             //获取生成的sql和参数列表
             SqlModel insert = CreateSql.GetInsertSqlAndParas<T>(t, strCols, isReturn);
             //执行sql命令
-            if(isReturn==0)
-            return SqlHelper.ExecuteNonQuery(insert.Sql, 1, insert.SqlParaArray);
+            if (isReturn == 0)
+                return SqlHelper.ExecuteNonQuery(insert.Sql, 1, insert.SqlParaArray);
             else
             {
-                object oId= SqlHelper.ExecuteScalar(insert.Sql, 1, insert.SqlParaArray);
+                object oId = SqlHelper.ExecuteScalar(insert.Sql, 1, insert.SqlParaArray);
                 if (oId != null && oId.ToString() != "")
                     return oId.GetInt();
                 else
@@ -54,7 +49,7 @@ namespace PSI.DAL
             List<CommandInfo> comList = new List<CommandInfo>();
             foreach (T t in list)
             {
-                SqlModel insert = CreateSql.GetInsertSqlAndParas<T>(t, strCols,0);
+                SqlModel insert = CreateSql.GetInsertSqlAndParas<T>(t, strCols, 0);
                 CommandInfo com = new CommandInfo(insert.Sql, false, insert.SqlParaArray);
                 comList.Add(com);
             }
@@ -126,16 +121,16 @@ namespace PSI.DAL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool Delete(int id,int delType,int isDeleted)
+        public bool Delete(int id, int delType, int isDeleted)
         {
             Type type = typeof(T);
-            
+
             string strWhere = $"[{type.GetPrimary()}]=@Id";
             SqlParameter[] paras =
             {
                 new SqlParameter("@Id",id)
             };
-            return Delete(delType, strWhere,isDeleted, paras);
+            return Delete(delType, strWhere, isDeleted, paras);
         }
 
         /// <summary>
@@ -144,14 +139,14 @@ namespace PSI.DAL
         /// <param name="strWhere">条件</param>
         /// <param name="paras">参数列表</param>
         /// <returns></returns>
-        public bool Delete(int actType,string strWhere,int isDeleted, SqlParameter[] paras)
+        public bool Delete(int actType, string strWhere, int isDeleted, SqlParameter[] paras)
         {
             Type type = typeof(T);
             string delSql = "";
-            if(actType ==1)
-              delSql = CreateSql.CreateDeleteSql<T>(strWhere);
-            else 
-              delSql = $"update [{type.GetTName()}] set IsDeleted={isDeleted} where {strWhere}";
+            if (actType == 1)
+                delSql = CreateSql.CreateDeleteSql<T>(strWhere);
+            else
+                delSql = $"update [{type.GetTName()}] set IsDeleted={isDeleted} where {strWhere}";
             List<CommandInfo> list = new List<CommandInfo>();
             list.Add(new CommandInfo()
             {
@@ -167,7 +162,7 @@ namespace PSI.DAL
         /// </summary>
         /// <param name="idList"></param>
         /// <returns></returns>
-        public bool DeleteList(List<int> idList,int actType,int isDeleted)
+        public bool DeleteList(List<int> idList, int actType, int isDeleted)
         {
             Type type = typeof(T);
             List<CommandInfo> comList = new List<CommandInfo>();
@@ -175,8 +170,8 @@ namespace PSI.DAL
             {
                 string strWhere = $"[{type.GetPrimary()}]=@Id";
                 string delSql = "";
-                if(actType ==1)
-                   delSql = CreateSql.CreateDeleteSql<T>(strWhere);
+                if (actType == 1)
+                    delSql = CreateSql.CreateDeleteSql<T>(strWhere);
                 else
                     delSql = $"update [{type.GetTName()}] set IsDeleted={isDeleted} where {strWhere}";
                 SqlParameter[] paras ={
@@ -189,6 +184,6 @@ namespace PSI.DAL
         }
         #endregion
 
-       
+
     }
 }

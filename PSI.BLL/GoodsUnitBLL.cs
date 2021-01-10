@@ -1,14 +1,10 @@
 ﻿using PSI.DAL;
 using PSI.Models.DModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PSI.BLL
 {
-    public class GoodsUnitBLL:BaseBLL<GoodsUnitInfoModel>
+    public class GoodsUnitBLL : BaseBLL<GoodsUnitInfoModel>
     {
         private GoodsUnitDAL guDAL = new GoodsUnitDAL();
         /// <summary>
@@ -53,9 +49,9 @@ namespace PSI.BLL
         /// </summary>
         /// <param name="guInfo"></param>
         /// <returns></returns>
-        public bool UpdatGoodsUnit(GoodsUnitInfoModel guInfo,bool isUpdateName,string oldName)
+        public bool UpdatGoodsUnit(GoodsUnitInfoModel guInfo, bool isUpdateName, string oldName)
         {
-            return guDAL.UpdatGoodsUnit(guInfo,isUpdateName,oldName);
+            return guDAL.UpdatGoodsUnit(guInfo, isUpdateName, oldName);
         }
 
         /// <summary>

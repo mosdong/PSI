@@ -1,15 +1,8 @@
-﻿using PSI.BLL;
-using PSI.Models.DModels;
+﻿using PSI.Models.DModels;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using WinPSI.FModels;
+using WinPSI.Request;
 
 namespace WinPSI.SM
 {
@@ -19,8 +12,7 @@ namespace WinPSI.SM
         {
             InitializeComponent();
         }
-        FInfoModel fModel = null;
-        private RoleBLL roleBLL = new RoleBLL();
+        FInfoModel fModel = null; 
         private string oldName = "";//要修改的角色名称
         private string btnText = "";
         private void FrmRoleInfo_Load(object sender, EventArgs e)
@@ -37,13 +29,13 @@ namespace WinPSI.SM
                 }
             };
             act.TryCatch("角色信息页面加载异常！");
-           
+
         }
 
         private void InitRoleInfo()
         {
             string addText = "——";
-          
+
             if (fModel.FId == 0)
             {
                 txtRName.Clear();
@@ -52,7 +44,7 @@ namespace WinPSI.SM
             }
             else
             {
-                RoleInfoModel roleInfo = roleBLL.GetRole(fModel.FId);
+                RoleInfoModel roleInfo = RequestStar.GetRole(fModel.FId);
                 if (roleInfo != null)
                 {
                     txtRName.Text = roleInfo.RoleName;
@@ -77,16 +69,16 @@ namespace WinPSI.SM
             string roleName = txtRName.Text.Trim();
             string remark = txtRemark.Text.Trim();
             //判空处理 ---角色名称
-             if(string.IsNullOrEmpty(roleName))
+            if (string.IsNullOrEmpty(roleName))
             {
                 MsgBoxHelper.MsgErrorShow("角色名称不能为空！");
                 txtRName.Focus();
                 return;
             }
             //角色名称存在性---add 不能是已存在  update 没有修改名称（不用判断存在性）  名称已修改的情况（要判断）
-            if(fModel.FId==0||(!string.IsNullOrEmpty(oldName)&&oldName !=roleName))
+            if (fModel.FId == 0 || (!string.IsNullOrEmpty(oldName) && oldName != roleName))
             {
-                if(roleBLL.ExistRoleName(roleName))
+                if (RequestStar.ExistRoleName(roleName))
                 {
                     MsgBoxHelper.MsgErrorShow("角色名称已经存在！");
                     txtRName.Focus();
@@ -98,21 +90,21 @@ namespace WinPSI.SM
             {
                 RoleName = roleName,
                 Remark = remark,
-                Creator=fModel.UName
+                Creator = fModel.UName
             };
             //调用方法（add）  （update）
             bool bl = false;
-            if(fModel.FId==0)
+            if (fModel.FId == 0)
             {
-                bl = roleBLL.AddRoleInfo(roleInfo);
+                bl = RequestStar.AddRoleInfo(roleInfo);
             }
-            else if(fModel.FId >0)
+            else if (fModel.FId > 0)
             {
                 roleInfo.RoleId = fModel.FId;
-                bl = roleBLL.UpdateRoleInfo(roleInfo);
+                bl = RequestStar.UpdateRoleInfo(roleInfo);
             }
             //判断结果给出提示
-            if(bl)
+            if (bl)
             {
                 MsgBoxHelper.MsgBoxShow($"{btnText}角色", $"角色：{roleName} 信息{btnText}成功！");
                 //刷新列表页面数据
@@ -120,7 +112,7 @@ namespace WinPSI.SM
             }
             else
             {
-                MsgBoxHelper.MsgErrorShow( $"角色：{roleName} 信息{btnText}失败！");
+                MsgBoxHelper.MsgErrorShow($"角色：{roleName} 信息{btnText}失败！");
                 return;
             }
         }

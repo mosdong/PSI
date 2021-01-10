@@ -1,15 +1,11 @@
 ﻿using PSI.DAL;
 using PSI.Models.DModels;
 using PSI.Models.VModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PSI.BLL
 {
-    public class UserBLL:BaseBLL<UserInfoModel>
+    public class UserBLL : BaseBLL<UserInfoModel>
     {
         UserDAL userDAL = new UserDAL();
         ViewUserRoleDAL vurDAL = new ViewUserRoleDAL();
@@ -19,11 +15,11 @@ namespace PSI.BLL
         /// <param name="uName"></param>
         /// <param name="uPwd"></param>
         /// <returns></returns>
-        public List<ViewUserRoleModel> Login(string uName,string uPwd)
+        public List<ViewUserRoleModel> Login(string uName, string uPwd)
         {
             List<ViewUserRoleModel> roleList = new List<ViewUserRoleModel>();
             int userId = userDAL.Login(uName, uPwd);
-            if(userId>0)
+            if (userId > 0)
             {
                 //获取用户角色列表
                 roleList = vurDAL.GetUserRoles(userId);

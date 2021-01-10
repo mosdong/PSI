@@ -1,11 +1,7 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace PSI.Common
 {
@@ -34,12 +30,12 @@ namespace PSI.Common
 
             //关闭流数据
             stream.Close();
-            sr.Close(); 
+            sr.Close();
             return result;
         }
 
 
-        public static string Post<T>(T value,string uri)
+        public static string Post<T>(T value, string uri)
         {
             string data = JsonConvert.SerializeObject(value);
             WebRequest request = WebRequest.Create(uri);
@@ -52,7 +48,7 @@ namespace PSI.Common
             //用于将数据写入Internet资源
             Stream stream = request.GetRequestStream();
             //request.ContentLength = buffer.Length;
-            stream.Write(buffer, 0, buffer.Length); 
+            stream.Write(buffer, 0, buffer.Length);
             WebResponse response = request.GetResponse();
 
             //从网络资源中返回数据流

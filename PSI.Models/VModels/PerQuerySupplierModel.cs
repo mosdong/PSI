@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PSI.Models.VModels
+﻿namespace PSI.Models.VModels
 {
     /// <summary>
     /// 按供应商采购统计数据实体

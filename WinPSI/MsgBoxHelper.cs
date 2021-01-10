@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace WinPSI
 {
@@ -15,9 +10,9 @@ namespace WinPSI
         /// <param name="titile"></param>
         /// <param name="Msg"></param>
         /// <returns></returns>
-        public static DialogResult MsgBoxShow(string titile,string Msg)
+        public static DialogResult MsgBoxShow(string titile, string Msg)
         {
-           return MessageBox.Show(Msg, titile, MessageBoxButtons.OK,MessageBoxIcon.Information);
+            return MessageBox.Show(Msg, titile, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         /// <summary>
@@ -26,7 +21,7 @@ namespace WinPSI
         /// <param name="title"></param>
         /// <param name="Msg"></param>
         /// <returns></returns>
-        public static DialogResult MsgBoxConfirm(string title,string Msg)
+        public static DialogResult MsgBoxConfirm(string title, string Msg)
         {
             return MessageBox.Show(Msg, title, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
         }

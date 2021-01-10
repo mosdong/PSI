@@ -1,13 +1,8 @@
 ﻿using PSI.BLL;
 using PSI.Models.APIModels;
 using PSI.Models.DModels;
-using PSI.Models.UIModels;
-using PSI.Models.VModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace PSI.API.Controllers
@@ -17,7 +12,6 @@ namespace PSI.API.Controllers
     {
         UnitTypeBLL utBLL = new UnitTypeBLL();
         UnitBLL unitBLL = new UnitBLL();
-
         #region Unit
 
         #region 删除
@@ -26,8 +20,8 @@ namespace PSI.API.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-       [HttpGet]
-       [Route("UnitLogicDelete")]
+        [HttpGet]
+        [Route("UnitLogicDelete")]
         public MessageResult UnitLogicDelete(int id)
         {
             try
@@ -661,5 +655,7 @@ namespace PSI.API.Controllers
             }
         }
         #endregion
+
+
     }
 }

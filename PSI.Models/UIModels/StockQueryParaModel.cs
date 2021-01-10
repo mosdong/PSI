@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PSI.Models.UIModels
+﻿namespace PSI.Models.UIModels
 {
     /// <summary>
     /// 库存查询页面条件信息实体

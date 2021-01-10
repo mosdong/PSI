@@ -1,10 +1,7 @@
 ﻿using PSI.DAL;
 using PSI.Models.DModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PSI.BLL
 {
@@ -51,7 +48,7 @@ namespace PSI.BLL
         /// <returns></returns>
         public List<MenuInfoModel> GetAllMenus()
         {
-         // return  GetModelList("MId,MName");
+            // return  GetModelList("MId,MName");
             return menuDAL.GetAllMenus();
         }
 
@@ -74,7 +71,7 @@ namespace PSI.BLL
             return menuDAL.GetMenuInfo(menuId);
         }
 
-       
+
 
         /// <summary>
         /// 判断菜单名称是否已存在
@@ -102,7 +99,7 @@ namespace PSI.BLL
         /// <param name="menuInfo"></param>
         /// <param name="blUpdate"></param>
         /// <returns></returns>
-        public bool UpdateMenuInfo(MenuInfoModel menuInfo,bool blUpdate)
+        public bool UpdateMenuInfo(MenuInfoModel menuInfo, bool blUpdate)
         {
             return menuDAL.UpdateMenuInfo(menuInfo, blUpdate);
         }
@@ -113,9 +110,9 @@ namespace PSI.BLL
         /// <param name="menuIds"></param>
         /// <param name="delType"></param>
         /// <returns></returns>
-        public bool DeleteMenu(List<int> menuIds,int delType)
+        public bool DeleteMenu(List<int> menuIds, int delType)
         {
-            return menuDAL.DeleteMenuInfo(menuIds,delType);
+            return menuDAL.DeleteMenuInfo(menuIds, delType);
         }
     }
 }

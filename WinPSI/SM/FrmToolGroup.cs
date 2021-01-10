@@ -1,14 +1,8 @@
-﻿using PSI.BLL;
-using PSI.Models.DModels;
+﻿using PSI.Models.DModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using WinPSI.Request;
 
 namespace WinPSI.SM
 {
@@ -18,9 +12,7 @@ namespace WinPSI.SM
         {
             InitializeComponent();
         }
-        string uName = "";
-        ToolGroupBLL tgBLL = new ToolGroupBLL();
-        ToolMenuBLL tmBLL = new ToolMenuBLL();
+        string uName = "";  
         string oldName = "";
         private void FrmToolGroup_Load(object sender, EventArgs e)
         {
@@ -30,7 +22,7 @@ namespace WinPSI.SM
                     uName = this.Tag.ToString();
                 panelInfo.Visible = false;
                 chkShowDel.Checked = false;
-               
+
                 LoadToolGroups();
             };
             act.TryCatch("工具组列表加载异常！");
@@ -43,13 +35,13 @@ namespace WinPSI.SM
         {
             SetActColsShow(chkShowDel.Checked);
             dgvGroups.AutoGenerateColumns = false;
-            List<ToolGroupInfoModel> list = tgBLL.GetToolGroups(chkShowDel.Checked);
+            List<ToolGroupInfoModel> list = RequestStar.GetToolGroups(chkShowDel.Checked);
             dgvGroups.DataSource = list;
         }
 
         private void SetActColsShow(bool blShow)
         {
-            if(blShow)
+            if (blShow)
             {
                 btnDel.Enabled = false;
                 btnRecover.Enabled = true;
@@ -120,7 +112,7 @@ namespace WinPSI.SM
             string title = "永久删除工具组";
             if (MsgBoxHelper.MsgBoxConfirm(title, "您确定要永久删除该工具组数据吗,删除了就无法再恢复?") == DialogResult.Yes)
             {
-                bool bl = tgBLL.DeleteToolGroup(tgInfo.TGroupId);
+                bool bl = RequestStar.DeleteToolGroup(tgInfo.TGroupId);
                 if (bl)
                 {
                     MsgBoxHelper.MsgBoxShow(title, $"工具组：{tgInfo.TGroupName} 永久删除成功！");
@@ -139,7 +131,7 @@ namespace WinPSI.SM
             string title = "恢复工具组";
             if (MsgBoxHelper.MsgBoxConfirm(title, "您确定要恢复该工具组数据吗？") == DialogResult.Yes)
             {
-                bool bl = tgBLL.RecoverToolGroup(tgInfo.TGroupId);
+                bool bl = RequestStar.RecoverToolGroup(tgInfo.TGroupId);
                 if (bl)
                 {
                     MsgBoxHelper.MsgBoxShow(title, $"工具组：{tgInfo.TGroupName} 恢复成功！");
@@ -165,9 +157,9 @@ namespace WinPSI.SM
                 //先检查是否已添加工具菜单数据
                 List<int> tgIds = new List<int>();
                 tgIds.Add(tgInfo.TGroupId);
-                if (!tmBLL.HasToolMenus(tgIds))
+                if (!RequestStar.HasToolMenus(tgIds))
                 {
-                    bool bl = tgBLL.LogicDeleteToolGroup(tgInfo.TGroupId);
+                    bool bl = RequestStar.LogicDeleteToolGroup(tgInfo.TGroupId);
                     if (bl)
                     {
                         MsgBoxHelper.MsgBoxShow(title, $"工具组：{tgInfo.TGroupName} 删除成功！");
@@ -195,7 +187,7 @@ namespace WinPSI.SM
         private void btnDel_Click(object sender, EventArgs e)
         {
             string title = "删除工具组";
-            if(dgvGroups.SelectedRows.Count>0)
+            if (dgvGroups.SelectedRows.Count > 0)
             {
                 if (MsgBoxHelper.MsgBoxConfirm(title, "您确定要删除这些工具组数据吗？") == DialogResult.Yes)
                 {
@@ -208,9 +200,9 @@ namespace WinPSI.SM
                     }
                     //先检查是否已添加工具菜单数据
 
-                    if (!tmBLL.HasToolMenus(tgIds))
+                    if (!RequestStar.HasToolMenus(tgIds))
                     {
-                        bool bl = tgBLL.LogicDeleteToolGroups(tgIds);
+                        bool bl = RequestStar.LogicDeleteToolGroups(tgIds);
                         if (bl)
                         {
                             MsgBoxHelper.MsgBoxShow(title, "这些工具组删除成功！");
@@ -229,7 +221,7 @@ namespace WinPSI.SM
                     }
                 }
             }
-            
+
         }
 
         private void btnRecover_Click(object sender, EventArgs e)
@@ -246,7 +238,7 @@ namespace WinPSI.SM
                         ToolGroupInfoModel tgInfo = row.DataBoundItem as ToolGroupInfoModel;
                         tgIds.Add(tgInfo.TGroupId);
                     }
-                    bool bl = tgBLL.RecoverToolGroups(tgIds);
+                    bool bl = RequestStar.RecoverToolGroups(tgIds);
                     if (bl)
                     {
                         MsgBoxHelper.MsgBoxShow(title, "这些工具组恢复成功！");
@@ -269,15 +261,15 @@ namespace WinPSI.SM
         private void btnOk_Click(object sender, EventArgs e)
         {
             string gName = txtGroupName.Text.Trim();
-            if(string.IsNullOrEmpty(gName))
+            if (string.IsNullOrEmpty(gName))
             {
                 MsgBoxHelper.MsgErrorShow("请输入组名！");
                 txtGroupName.Focus();
                 return;
             }
-            if(tgId==0||(tgId>0&&oldName!=gName))
+            if (tgId == 0 || (tgId > 0 && oldName != gName))
             {
-                if (tgBLL.ExistName(gName))
+                if (RequestStar.ExistName(gName))
                 {
                     MsgBoxHelper.MsgErrorShow("该组名已存在，请重新输入组名！");
                     txtGroupName.Focus();
@@ -288,10 +280,10 @@ namespace WinPSI.SM
             {
                 TGroupName = gName,
                 Creator = uName,
-                TGroupId=tgId
+                TGroupId = tgId
             };
             bool bl = false;
-            bl = tgBLL.ConfirmToolGroup(tgInfo);
+            bl = RequestStar.ConfirmToolGroup(tgInfo);
             string actMsg = "";
             actMsg = tgId == 0 ? "添加" : "修改";
             string msgTitle = $"{actMsg}工具组";
@@ -299,7 +291,7 @@ namespace WinPSI.SM
             string msg = $"工具组：{gName} {actMsg} {sucMsg}！";
             if (bl)
             {
-                MsgBoxHelper.MsgBoxShow(msgTitle,msg);
+                MsgBoxHelper.MsgBoxShow(msgTitle, msg);
                 LoadToolGroups();
             }
             else

@@ -1,14 +1,11 @@
 ﻿using PSI.DAL;
 using PSI.Models.DModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PSI.BLL
 {
-    public class ToolMenuBLL:BaseBLL<ToolMenuInfoModel>
+    public class ToolMenuBLL : BaseBLL<ToolMenuInfoModel>
     {
         ToolMenuDAL tmDAL = new ToolMenuDAL();
         RoleToolMenuDAL rtmDAL = new RoleToolMenuDAL();
@@ -32,7 +29,7 @@ namespace PSI.BLL
             return tmDAL.GetToolMenuList();
         }
 
-       
+
 
         /// <summary>
         /// 获取指定角色的工具栏菜单编号集合
@@ -50,9 +47,9 @@ namespace PSI.BLL
         /// </summary>
         /// <param name="keywords"></param>
         /// <returns></returns>
-        public List<ToolMenuInfoModel> GetToolMenuInfos(string keywords,bool blShow)
+        public List<ToolMenuInfoModel> GetToolMenuInfos(string keywords, bool blShow)
         {
-            return tmDAL.GetToolMenuInfos(keywords,blShow);
+            return tmDAL.GetToolMenuInfos(keywords, blShow);
         }
 
         /// <summary>
@@ -64,7 +61,7 @@ namespace PSI.BLL
         {
             List<int> ids = new List<int>();
             ids.Add(tmenuId);
-            return tmDAL.UpdateToolMenusDelState(ids, 0,1);
+            return tmDAL.UpdateToolMenusDelState(ids, 0, 1);
         }
 
         /// <summary>
@@ -76,7 +73,7 @@ namespace PSI.BLL
         {
             List<int> ids = new List<int>();
             ids.Add(tmenuId);
-            return tmDAL.UpdateToolMenusDelState(ids, 1,2);
+            return tmDAL.UpdateToolMenusDelState(ids, 1, 2);
         }
 
         /// <summary>
@@ -86,7 +83,7 @@ namespace PSI.BLL
         /// <returns></returns>
         public bool DeleteToolMenus(List<int> delIds)
         {
-            return tmDAL.UpdateToolMenusDelState(delIds, 1,2);
+            return tmDAL.UpdateToolMenusDelState(delIds, 1, 2);
         }
 
         /// <summary>
@@ -96,7 +93,7 @@ namespace PSI.BLL
         /// <returns></returns>
         public bool DeleteToolMenusLogic(List<int> delIds)
         {
-            return tmDAL.UpdateToolMenusDelState(delIds, 0,1);
+            return tmDAL.UpdateToolMenusDelState(delIds, 0, 1);
         }
 
         /// <summary>

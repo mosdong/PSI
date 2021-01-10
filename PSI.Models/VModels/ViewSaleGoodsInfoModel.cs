@@ -1,9 +1,4 @@
 ﻿using PSI.Common.CustomAttributes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PSI.Models.VModels
 {
@@ -22,7 +17,7 @@ namespace PSI.Models.VModels
         public string GoodsNo { get; set; }
         public string GoodsTXNo { get; set; }
         public string GoodsName { get; set; }
-        public int Count {get; set; }
+        public int Count { get; set; }
         public decimal SalePrice { get; set; }
         public decimal Amount { get; set; }
         public string Remark { get; set; }

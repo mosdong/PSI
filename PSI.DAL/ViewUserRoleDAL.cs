@@ -1,14 +1,10 @@
 ﻿using PSI.Models.VModels;
-using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PSI.DAL
 {
-    public class ViewUserRoleDAL:BQuery<ViewUserRoleModel>
+    public class ViewUserRoleDAL : BQuery<ViewUserRoleModel>
     {
         /// <summary>
         /// 获取用户角色列表

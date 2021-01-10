@@ -1,8 +1,5 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Data;
-using PSI.Common.CustomAttributes;
+﻿using PSI.Common.CustomAttributes;
+using System;
 
 namespace PSI.Models.DModels
 {
@@ -37,7 +34,7 @@ namespace PSI.Models.DModels
         /// <summary>
         /// PayDesp
         /// </summary>		
-        public string  PayDesp { get; set; }
+        public string PayDesp { get; set; }
         /// <summary>
         /// ThisAmount
         /// </summary>		

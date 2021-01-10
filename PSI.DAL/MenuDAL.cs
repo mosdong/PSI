@@ -1,12 +1,7 @@
 ﻿using PSI.DbUtility;
 using PSI.Models.DModels;
-using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PSI.DAL
 {
@@ -144,16 +139,16 @@ namespace PSI.DAL
         /// <param name="MenuIds"></param>
         /// <param name="delType"></param>
         /// <returns></returns>
-        public bool DeleteMenuInfo(List<int> MenuIds,int delType)
+        public bool DeleteMenuInfo(List<int> MenuIds, int delType)
         {
             List<string> sqlList = new List<string>();
             //获取要删除的菜单编号集合
             List<int> menuIds = new List<int>();
-            foreach(int menuId in MenuIds)
+            foreach (int menuId in MenuIds)
             {
-                if(!menuIds.Contains(menuId))
-                     menuIds.Add(menuId);
-                 menuIds =  GetChildMenuIds(menuIds, menuId);
+                if (!menuIds.Contains(menuId))
+                    menuIds.Add(menuId);
+                menuIds = GetChildMenuIds(menuIds, menuId);
             }
             string strIds = string.Join(",", menuIds);
             string strWhere = $"MId in ({strIds})";
@@ -164,7 +159,7 @@ namespace PSI.DAL
                 delMenu = "delete from MenuInfos where " + strWhere;
                 delRoleMenu = "delete from RoleMenuInfos where " + strWhere;
             }
-                
+
             else
             {
                 delMenu = "update MenuInfos set IsDeleted=1 where " + strWhere;
@@ -181,10 +176,10 @@ namespace PSI.DAL
         /// <param name="menuIds"></param>
         /// <param name="parentId"></param>
         /// <returns></returns>
-        private List<int> GetChildMenuIds(List<int> menuIds,int parentId)
+        private List<int> GetChildMenuIds(List<int> menuIds, int parentId)
         {
-           List<MenuInfoModel> list =  GetModelList($"ParentId={parentId} and IsDeleted=0", "MId");
-            foreach(MenuInfoModel menu in list)
+            List<MenuInfoModel> list = GetModelList($"ParentId={parentId} and IsDeleted=0", "MId");
+            foreach (MenuInfoModel menu in list)
             {
                 if (!menuIds.Contains(menu.MId))
                     menuIds.Add(menu.MId);

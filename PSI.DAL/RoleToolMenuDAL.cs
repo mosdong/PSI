@@ -1,16 +1,12 @@
 ﻿using PSI.Models.DModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PSI.DAL
 {
     /// <summary>
     /// 角色菜单关系 数据访问类
     /// </summary>
-    public class RoleToolMenuDAL:BaseDAL<RoleTMenuInfoModel>
+    public class RoleToolMenuDAL : BaseDAL<RoleTMenuInfoModel>
     {
         /// <summary>
         /// 获取指定角色的工具栏菜单编号集合

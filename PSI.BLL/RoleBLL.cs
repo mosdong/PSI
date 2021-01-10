@@ -1,14 +1,10 @@
 ﻿using PSI.DAL;
 using PSI.Models.DModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PSI.BLL
 {
-    public class RoleBLL:BaseBLL<RoleInfoModel>
+    public class RoleBLL : BaseBLL<RoleInfoModel>
     {
         RoleDAL roleDAL = new RoleDAL();
         /// <summary>
@@ -110,7 +106,7 @@ namespace PSI.BLL
         /// <param name="tmenuIds"></param>
         /// <param name="uName"></param>
         /// <returns></returns>
-        public bool SetRoleRight(int roleId,List<int> menuIds,List<int> tmenuIds,string uName)
+        public bool SetRoleRight(int roleId, List<int> menuIds, List<int> tmenuIds, string uName)
         {
             List<RoleMenuInfoModel> rmList = new List<RoleMenuInfoModel>();
             List<RoleTMenuInfoModel> rtmList = new List<RoleTMenuInfoModel>();
@@ -127,7 +123,7 @@ namespace PSI.BLL
                     });
                 }
             }
-            if(tmenuIds!=null)
+            if (tmenuIds != null)
             {
                 foreach (int tmenuId in tmenuIds)
                 {

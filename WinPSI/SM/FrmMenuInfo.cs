@@ -1,16 +1,12 @@
-﻿using PSI.BLL;
-using PSI.Common;
+﻿using PSI.Common;
 using PSI.Models.DModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using WinPSI.FModels;
+using WinPSI.Request;
 
 namespace WinPSI.SM
 {
@@ -19,8 +15,7 @@ namespace WinPSI.SM
         public FrmMenuInfo()
         {
             InitializeComponent();
-        }
-        private MenuBLL menuBLL = new MenuBLL();
+        } 
         FInfoModel fModel = null;
         int menuId = 0;//修改的菜单编号
         string uName = "";
@@ -29,17 +24,17 @@ namespace WinPSI.SM
         {
             Action act = () =>
             {
-                if(this.Tag!=null)
+                if (this.Tag != null)
                 {
                     fModel = this.Tag as FInfoModel;
-                    if(fModel!=null)
+                    if (fModel != null)
                     {
                         uName = fModel.UName;
                         menuId = fModel.FId;
                         LoadCboParents();//加载父菜单下拉框
                         LoadCboForms();//加载关联页面下拉框
                         string title = "";
-                        switch(fModel.ActType)
+                        switch (fModel.ActType)
                         {
                             case 1://新增
                                 title = "新增";
@@ -63,7 +58,7 @@ namespace WinPSI.SM
                                 tsbtnClear.Enabled = false;
                                 break;
                         }
-                        this.Text +="----"+title;
+                        this.Text += "----" + title;
                     }
                 }
             };
@@ -90,15 +85,15 @@ namespace WinPSI.SM
         /// <param name="menuId"></param>
         private void InitMenuInfo(int menuId)
         {
-            MenuInfoModel menuInfo = menuBLL.GetMenuInfo(menuId);
-            if(menuInfo!=null)
+            MenuInfoModel menuInfo = RequestStar.GetMenuInfo(menuId);
+            if (menuInfo != null)
             {
                 txtMName.Text = menuInfo.MName;
                 oldName = menuInfo.MName;
                 txtMKey.Text = menuInfo.MKey;
                 txtMDesp.Text = menuInfo.MDesp;
                 txtOrder.Text = menuInfo.MOrder.ToString();
-                if(menuInfo.ParentId !=null)
+                if (menuInfo.ParentId != null)
                     cboParents.SelectedValue = menuInfo.ParentId;
                 if (!string.IsNullOrEmpty(menuInfo.MUrl))
                     cboUrls.SelectedValue = menuInfo.MUrl;
@@ -124,7 +119,7 @@ namespace WinPSI.SM
             foreach (Type type in frmTypes)
             {
                 Form f = (Form)Activator.CreateInstance(type);
-                listForms.Add(type.FullName.Remove(0, assName.Length + 1),f.Text);
+                listForms.Add(type.FullName.Remove(0, assName.Length + 1), f.Text);
                 f.Dispose();
             }
             //绑定
@@ -143,7 +138,7 @@ namespace WinPSI.SM
         private void LoadCboParents()
         {
             cboParents.Items.Clear();
-            List<MenuInfoModel> menuList = menuBLL.GetAllMenus();
+            List<MenuInfoModel> menuList = RequestStar.GetAllMenus();
             menuList.Insert(0, new MenuInfoModel()
             {
                 MId = 0,
@@ -182,17 +177,17 @@ namespace WinPSI.SM
                 mDesp = null;
             int isTop = chkTop.Checked ? 1 : 0;
             //2.判断菜单名称不能为空
-            if(string.IsNullOrEmpty(mName))
+            if (string.IsNullOrEmpty(mName))
             {
                 MsgBoxHelper.MsgErrorShow("菜单名称不能为空！");
                 txtMName.Focus();
                 return;
             }
             //3.判断菜单名称是否已存在 （oldName=""||(oldName!="" && oleName!=mName)） 
-            if(string.IsNullOrEmpty(oldName)||(!string.IsNullOrEmpty(oldName)&&oldName != mName))
+            if (string.IsNullOrEmpty(oldName) || (!string.IsNullOrEmpty(oldName) && oldName != mName))
             {
                 //判断名称是否已存在
-                if(menuBLL.ExistMenu(mName))
+                if (RequestStar.ExistMenu(mName))
                 {
                     MsgBoxHelper.MsgErrorShow("菜单名称已存在！");
                     txtMName.Focus();
@@ -209,27 +204,27 @@ namespace WinPSI.SM
                 MOrder = mOrder,
                 MKey = mKey,
                 IsTop = isTop,
-                MDesp=mDesp,
-                Creator=fModel.UName
+                MDesp = mDesp,
+                Creator = fModel.UName
             };
             //5.执行方法（添加、修改）
             bool bl = false;
             string actMsg = fModel.ActType == 2 ? "修改" : "新增";
-            if(fModel.ActType==1||fModel.ActType==3)
+            if (fModel.ActType == 1 || fModel.ActType == 3)
             {
                 //新增操作
-                bl = menuBLL.AddMenuInfo(menuInfo);
+                bl = RequestStar.AddMenuInfo(menuInfo);
             }
-            else if(fModel.ActType ==2)
+            else if (fModel.ActType == 2)
             {
                 //修改操作
                 menuInfo.MId = menuId;
                 bool blUpdate = false;
                 if (oldName != mName)
                     blUpdate = true;
-                bl = menuBLL.UpdateMenuInfo(menuInfo, blUpdate);
+                bl = RequestStar.UpdateMenuInfo(menuInfo, blUpdate);
             }
-            if(bl)
+            if (bl)
             {
                 MsgBoxHelper.MsgBoxShow($"{actMsg}菜单", $"菜单：{mName} 信息 {actMsg}成功！");
                 fModel.ReLoad?.Invoke();//刷新列表数据

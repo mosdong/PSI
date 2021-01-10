@@ -1,15 +1,9 @@
-﻿using PSI.BLL;
-using PSI.Models.DModels;
+﻿using PSI.Models.DModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using WinPSI.FModels;
+using WinPSI.Request;
 
 namespace WinPSI.SM
 {
@@ -18,8 +12,7 @@ namespace WinPSI.SM
         public FrmRoleList()
         {
             InitializeComponent();
-        }
-        private RoleBLL roleBLL = new RoleBLL();
+        } 
         private string uName = "";
         /// <summary>
         /// 页面加载
@@ -32,14 +25,14 @@ namespace WinPSI.SM
             {
                 if (this.Tag != null)
                     uName = this.Tag.ToString();
-                LoadAllRoles(); 
+                LoadAllRoles();
             };
             act.TryCatch("角色管理页面加载异常！");
         }
 
         private void LoadAllRoles()
         {
-            List<RoleInfoModel> list = roleBLL.GetAllRoleList();
+            List<RoleInfoModel> list = RequestStar.GetAllRoleList();
             dgvRoles.AutoGenerateColumns = false;
             dgvRoles.DataSource = list;
         }
@@ -58,7 +51,7 @@ namespace WinPSI.SM
         /// </summary>
         /// <param name="actType"></param>
         /// <param name="roleId"></param>
-        private void ShowRoleInfoPage(int actType,int roleId)
+        private void ShowRoleInfoPage(int actType, int roleId)
         {
             FrmRoleInfo fRole = new FrmRoleInfo();
             fRole.Tag = new FInfoModel()
@@ -91,12 +84,12 @@ namespace WinPSI.SM
         {
             Action act = () =>
             {
-                if(e.RowIndex>=0)
+                if (e.RowIndex >= 0)
                 {
                     var curCell = dgvRoles.Rows[e.RowIndex].Cells[e.ColumnIndex];
                     string cellVal = curCell.FormattedValue.ToString();
                     RoleInfoModel roleInfo = dgvRoles.Rows[e.RowIndex].DataBoundItem as RoleInfoModel;
-                    switch(cellVal)
+                    switch (cellVal)
                     {
                         case "修改":
                             ShowRoleInfoPage(2, roleInfo.RoleId);
@@ -107,7 +100,7 @@ namespace WinPSI.SM
                         case "删除":
                             DeleteRole(roleInfo);
                             break;
-                     
+
                     }
                 }
             };
@@ -123,7 +116,7 @@ namespace WinPSI.SM
             string titleMsg = "删除角色";
             if (MsgBoxHelper.MsgBoxConfirm(titleMsg, "您确定要删除该角色吗？会连同与角色相关的数据一并删除？") == DialogResult.Yes)
             {
-                bool bl = roleBLL.DeleteRoleLogic(roleInfo.RoleId);
+                bool bl = RequestStar.DeleteRoleLogic(roleInfo.RoleId);
                 if (bl)
                 {
                     MsgBoxHelper.MsgBoxShow(titleMsg, $"角色：{roleInfo.RoleName} 信息删除成功！");
@@ -154,10 +147,10 @@ namespace WinPSI.SM
         /// <param name="e"></param>
         private void btnDel_Click(object sender, EventArgs e)
         {
-            if(dgvRoles.SelectedRows.Count >0)
+            if (dgvRoles.SelectedRows.Count > 0)
             {
                 string titleMsg = "删除角色";
-                if(MsgBoxHelper.MsgBoxConfirm(titleMsg, "您确定要删除选择的角色吗？会连同与角色相关的数据一并删除？")==DialogResult.Yes)
+                if (MsgBoxHelper.MsgBoxConfirm(titleMsg, "您确定要删除选择的角色吗？会连同与角色相关的数据一并删除？") == DialogResult.Yes)
                 {
                     List<int> roleIds = new List<int>();
                     foreach (DataGridViewRow row in dgvRoles.SelectedRows)
@@ -165,7 +158,7 @@ namespace WinPSI.SM
                         RoleInfoModel roleInfo = row.DataBoundItem as RoleInfoModel;
                         roleIds.Add(roleInfo.RoleId);
                     }
-                    bool bl = roleBLL.DeleteRoles(roleIds, 0);
+                    bool bl = RequestStar.DeleteRoles(roleIds, 0);
                     if (bl)
                     {
                         MsgBoxHelper.MsgBoxShow(titleMsg, $"选择角色信息删除成功！");
@@ -177,7 +170,7 @@ namespace WinPSI.SM
                         return;
                     }
                 }
-                
+
             }
             else
             {

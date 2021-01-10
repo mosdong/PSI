@@ -17,7 +17,7 @@ namespace WinPSI.BM
         public FrmChooseGoods()
         {
             InitializeComponent();
-        } 
+        }
         public event Action SetChooseGoods;
         private string typeName = "";
         private string uName = "";

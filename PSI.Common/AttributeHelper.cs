@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PSI.Common.CustomAttributes;
+﻿using PSI.Common.CustomAttributes;
+using System;
 using System.Reflection;
 
 namespace PSI.Common
@@ -19,15 +15,15 @@ namespace PSI.Common
         {
             string tableName = string.Empty;
             object[] attrs = type.GetCustomAttributes(false);
-            foreach (var  attr in attrs)
+            foreach (var attr in attrs)
             {
-                if(attr is TableAttribute)
+                if (attr is TableAttribute)
                 {
                     TableAttribute tableAttribute = attr as TableAttribute;
                     tableName = tableAttribute.Name;
                 }
             }
-            if(string.IsNullOrEmpty(tableName))
+            if (string.IsNullOrEmpty(tableName))
             {
                 tableName = type.Name;
             }
@@ -45,13 +41,13 @@ namespace PSI.Common
             object[] attrs = property.GetCustomAttributes(false);
             foreach (var attr in attrs)
             {
-                if(attr is ColumnAttribute)
+                if (attr is ColumnAttribute)
                 {
                     ColumnAttribute colAttr = attr as ColumnAttribute;
                     columnName = colAttr.ColName;
                 }
             }
-            if(string.IsNullOrEmpty(columnName))
+            if (string.IsNullOrEmpty(columnName))
             {
                 columnName = property.Name;
             }
@@ -75,8 +71,8 @@ namespace PSI.Common
                 }
             }
             return false;
-        } 
- 
+        }
+
         ///<summary>  
         /// 获取主键名  
         /// </summary>  
@@ -110,8 +106,8 @@ namespace PSI.Common
         }
 
 
-        
 
-        
+
+
     }
 }
