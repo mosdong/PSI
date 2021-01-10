@@ -1,4 +1,5 @@
-﻿using PSI.BLL;
+﻿using PSI.API.Filter;
+using PSI.BLL;
 using PSI.Models.APIModels;
 using PSI.Models.DModels;
 using PSI.Models.UIModels;
@@ -13,6 +14,7 @@ namespace PSI.API.Controllers
     /// 
     /// </summary>
     [RoutePrefix("api/choose")]
+    [ActionLog]
     public class ChooseGoodsController : ApiController
     {
         private GoodsBLL goodsBLL = new GoodsBLL();

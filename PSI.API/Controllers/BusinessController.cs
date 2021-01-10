@@ -1,4 +1,5 @@
-﻿using PSI.BLL;
+﻿using PSI.API.Filter;
+using PSI.BLL;
 using PSI.Models.APIModels;
 using PSI.Models.UIModels;
 using System;
@@ -6,6 +7,7 @@ using System.Web.Http;
 
 namespace PSI.API.Controllers
 {
+    [ActionLog]
     [RoutePrefix("api/business")]
     public class BusinessController : ApiController
     {

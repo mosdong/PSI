@@ -113,5 +113,12 @@ namespace WinPSI
             txtUName.Clear();
             txtUPwd.Clear();
         }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            Dispose();
+            Close();
+            Environment.Exit(0);
+        }
     }
 }

@@ -177,6 +177,7 @@
     <Compile Include="Controllers\ToolController.cs" />
     <Compile Include="Controllers\UnitController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Filter\ActionLogAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
