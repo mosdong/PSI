@@ -1400,7 +1400,7 @@ namespace WinPSI.Request
                 IsShowDel = isShowDel,
                 PageSize = pageSize
             };
-            var result = HttpHelper.Post(pageInfo, url + $"api/unit/GetUnitList");
+            var result = HttpHelper.Post(pageInfo, url + $"api/unit/GetUnitListByPage");
             MessageResult message = JsonConvert.DeserializeObject<MessageResult>(result);
             if (message.IsOK)
             {

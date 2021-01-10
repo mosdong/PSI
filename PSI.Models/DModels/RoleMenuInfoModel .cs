@@ -6,7 +6,7 @@ namespace PSI.Models.DModels
     /// <summary>
     /// 角色菜单关系信息实体
     /// </summary>
-    [Serializable]
+    //[Serializable]
     [Table("RoleMenuInfos")]
     [PrimaryKey("RMId")]
     public class RoleMenuInfoModel

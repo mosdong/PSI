@@ -6,7 +6,7 @@ namespace PSI.Models.DModels
     /// <summary>
     /// 往来单位类别信息实体
     /// </summary>
-    [Serializable]
+    //[Serializable]
     [Table("UnitTypeInfos")]
     [PrimaryKey("UTypeId")]
     public class UnitTypeInfoModel

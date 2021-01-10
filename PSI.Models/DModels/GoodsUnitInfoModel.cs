@@ -6,7 +6,7 @@ namespace PSI.Models.DModels
     /// <summary>
     /// 商品单位信息实体
     /// </summary>
-    [Serializable]
+    //[Serializable]
     [Table("GoodsUnitInfos")]
     [PrimaryKey("GUnitId")]
     public class GoodsUnitInfoModel

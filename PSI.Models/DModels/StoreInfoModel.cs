@@ -6,7 +6,7 @@ namespace PSI.Models.DModels
     /// <summary>
     /// 仓库信息实体
     /// </summary>
-    [Serializable]
+    //[Serializable]
     [Table("StoreInfos")]
     [PrimaryKey("StoreId")]
     public class StoreInfoModel

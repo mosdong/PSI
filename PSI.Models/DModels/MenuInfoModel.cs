@@ -6,7 +6,7 @@ namespace PSI.Models.DModels
     /// <summary>
     /// 菜单信息实体
     /// </summary>
-    [Serializable]
+    //[Serializable]
     [Table("MenuInfos")]
     [PrimaryKey("MId")]
     public class MenuInfoModel

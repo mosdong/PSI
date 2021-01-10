@@ -6,7 +6,7 @@ namespace PSI.Models.DModels
     /// <summary>
     /// 销售出库单信息实体
     /// </summary>
-    [Serializable]
+    //[Serializable]
     [Table("SaleOutStoreInfos")]
     [PrimaryKey("SaleId")]
     public class SaleOutStoreInfoModel

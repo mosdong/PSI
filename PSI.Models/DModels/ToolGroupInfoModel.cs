@@ -6,7 +6,7 @@ namespace PSI.Models.DModels
     /// <summary>
     /// 工具栏组信息实体
     /// </summary>
-    [Serializable]
+    //[Serializable]
     [Table("ToolGroupInfos")]
     [PrimaryKey("TGroupId")]
     public class ToolGroupInfoModel

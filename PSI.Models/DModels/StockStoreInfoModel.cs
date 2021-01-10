@@ -6,7 +6,7 @@ namespace PSI.Models.DModels
     /// <summary>
     /// 库存仓库信息实体
     /// </summary>
-    [Serializable]
+    //[Serializable]
     [Table("StockStoreInfos")]
     [PrimaryKey("StockId")]
     public class StockStoreInfoModel

@@ -6,7 +6,7 @@ namespace PSI.Models.DModels
     /// <summary>
     /// 采购入库信息实体
     /// </summary>
-    [Serializable]
+    //[Serializable]
     [Table("PerchaseInStoreInfos")]
     [PrimaryKey("PerId")]
     public class PerchaseInStoreInfoModel

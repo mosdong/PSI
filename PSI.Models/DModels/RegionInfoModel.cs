@@ -6,7 +6,7 @@ namespace PSI.Models.DModels
     /// <summary>
     /// 区域信息实体
     /// </summary>
-    [Serializable]
+    //[Serializable]
     [Table("RegionInfos")]
     [PrimaryKey("RegionId")]
     public class RegionInfoModel

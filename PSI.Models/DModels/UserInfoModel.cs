@@ -7,7 +7,7 @@ namespace PSI.Models.DModels
     /// 用户信息实体
     /// </summary>
     [Table("UserInfos")]
-    [Serializable]
+    //[Serializable]
     [PrimaryKey("UserId")]
     public class UserInfoModel
     {

@@ -6,7 +6,7 @@ namespace PSI.Models.DModels
     /// <summary>
     /// 角色信息实体
     /// </summary>
-    [Serializable]
+    //[Serializable]
     [Table("RoleInfos")]
     [PrimaryKey("RoleId")]
     public class RoleInfoModel

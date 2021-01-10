@@ -148,7 +148,7 @@ namespace PSI.API.Controllers
         /// <param name="pageSize"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("GetUnitList")]
+        [Route("GetUnitListByPage")]
         public MessageResult GetUnitList(PageInfo pageInfo)
         {
             try

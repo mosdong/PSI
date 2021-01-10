@@ -6,7 +6,7 @@ namespace PSI.Models.DModels
     /// <summary>
     /// 支付信息实体类
     /// </summary>
-    [Serializable]
+    //[Serializable]
     [Table("PayInfos")]
     [PrimaryKey("PayId")]
     public class PayInfoModel

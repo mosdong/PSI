@@ -6,7 +6,7 @@ namespace PSI.Models.DModels
     /// <summary>
     /// 工具栏组信息实体
     /// </summary>
-    [Serializable]
+    //[DataContract]
     [Table("ToolMenuInfos")]
     [PrimaryKey("TMenuId")]
     public class ToolMenuInfoModel

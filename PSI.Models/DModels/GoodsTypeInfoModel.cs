@@ -6,7 +6,7 @@ namespace PSI.Models.DModels
     /// <summary>
     /// 商品类别信息实体
     /// </summary>
-    [Serializable]
+    //[Serializable]
     [Table("GoodsTypeInfos")]
     [PrimaryKey("GTypeId")]
     public class GoodsTypeInfoModel
