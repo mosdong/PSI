@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="APIModels\GoodsTypeInfoApi.cs" />
     <Compile Include="APIModels\GoodsUnitInfoApi.cs" />
+    <Compile Include="APIModels\HttpWebAPILog.cs" />
     <Compile Include="APIModels\MenuInfoApi.cs" />
     <Compile Include="APIModels\MessageResult.cs" />
     <Compile Include="APIModels\PageInfo.cs" />
