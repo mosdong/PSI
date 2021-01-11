@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSI.DBUtility", "PSI.DBUitl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSI.API", "PSI.API\PSI.API.csproj", "{9A91EA03-BC4B-459D-9C59-BDC45DF8980A}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "进销存", "进销存\进销存.vdproj", "{1581DEC6-8B4A-4934-8611-4990B8B02DD7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,8 @@ Global
 		{9A91EA03-BC4B-459D-9C59-BDC45DF8980A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A91EA03-BC4B-459D-9C59-BDC45DF8980A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A91EA03-BC4B-459D-9C59-BDC45DF8980A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1581DEC6-8B4A-4934-8611-4990B8B02DD7}.Debug|Any CPU.ActiveCfg = Debug
+		{1581DEC6-8B4A-4934-8611-4990B8B02DD7}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

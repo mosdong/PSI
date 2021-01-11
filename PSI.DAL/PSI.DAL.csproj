@@ -48,6 +48,7 @@
     <Compile Include="GoodsDAL.cs" />
     <Compile Include="GoodsTypeDAL.cs" />
     <Compile Include="GoodsUnitDAL.cs" />
+    <Compile Include="HttpApiLogDAL.cs" />
     <Compile Include="MenuDAL.cs" />
     <Compile Include="PerchaseGoodsDAL.cs" />
     <Compile Include="SaleGoodsDAL.cs" />

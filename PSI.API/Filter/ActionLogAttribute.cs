@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PSI.BLL;
 using PSI.Models.APIModels;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,7 @@ namespace PSI.API.Filter
         private const string Key = "action";
         private bool _IsDebugLog = true;
         private HttpWebAPILog log;
+        private HttpApiLogBLL httpApiLogBLL = new HttpApiLogBLL();
         public override void OnActionExecuting(HttpActionContext actionContext)
         {
             log = new HttpWebAPILog();
@@ -49,6 +51,8 @@ namespace PSI.API.Filter
             log.RequestMethod = actionContext.Request.Method.ToString();
             log.RequestUri = actionContext.Request.RequestUri.ToString();
             log.RequestDate = DateTime.Now;
+            var id= httpApiLogBLL.AddLog(log);
+            log.ID = id;
             if (_IsDebugLog)
             {
                 Stopwatch stopWatch = new Stopwatch();
@@ -59,6 +63,7 @@ namespace PSI.API.Filter
 
                 stopWatch.Start();
             }
+
 
         }
 
@@ -80,10 +85,14 @@ namespace PSI.API.Filter
 
                     Debug.Print(actionExecutedContext.Response.Content.ReadAsStringAsync().Result);
 
-                    Debug.Print(string.Format(@"[{0}/{1} 用时 {2}ms]", controllerName, actionName, stopWatch.Elapsed.TotalMilliseconds));
-                    log.Milliseconds = stopWatch.Elapsed.TotalMilliseconds;
+                    Debug.Print(string.Format(@"[{0}/{1} 用时 {2}ms]", controllerName, actionName, stopWatch.Elapsed.Milliseconds));
+                    log.Milliseconds = stopWatch.Elapsed.Milliseconds;
                 }
             }
+            log.ResponseDate = DateTime.Now;
+            var response =  actionExecutedContext.Response.Content.ReadAsStringAsync().Result;
+            log.ResponseResult = response;
+            httpApiLogBLL.UpdateLog(log);
         }
 
         /// <summary>

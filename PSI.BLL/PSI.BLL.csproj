@@ -47,6 +47,7 @@
     <Compile Include="GoodsBLL.cs" />
     <Compile Include="GoodsTypeBLL.cs" />
     <Compile Include="GoodsUnitBLL.cs" />
+    <Compile Include="HttpApiLogBLL.cs" />
     <Compile Include="MenuBLL.cs" />
     <Compile Include="PayBLL.cs" />
     <Compile Include="PerchaseInStoreBLL.cs" />

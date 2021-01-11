@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PSI.Common.CustomAttributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,13 @@ namespace PSI.Models.APIModels
 {
 	/// <summary>
 	/// 接口日志
-	/// </summary>
-    public class HttpWebAPILog
+	/// </summary> 
+	[Table("HttpWebAPILog")]
+	//[Serializable]
+	[PrimaryKey("ID")]
+	public class HttpWebAPILog
     {
-		public string ID { set; get; }
+		public int ID { set; get; }
 		public string RequestIP { set; get; }
 		public string RequestUri { set; get; }
 		public string RequestMethod { set; get; }
